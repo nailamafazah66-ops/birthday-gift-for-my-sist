@@ -1,730 +1,560 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-tap-highlight-color: transparent;
-}
+// ==========================================
+// SCREEN SYSTEM
+// ==========================================
 
-html,
-body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
+const screens = document.querySelectorAll(".screen");
 
-body {
-    font-family: Georgia, "Times New Roman", serif;
-    background: #8d0718;
-    color: white;
-}
+function showScreen(id) {
+    screens.forEach(screen => {
+        screen.classList.remove("active");
+    });
 
-button {
-    font-family: inherit;
-}
+    const target = document.getElementById(id);
 
-.screen {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100dvh;
-    display: none;
-    overflow: hidden;
-}
-
-.screen.active {
-    display: flex;
-}
-
-
-/* BUTTON */
-
-.main-btn {
-    border: 0;
-    background: white;
-    color: #a00018;
-    padding: 13px 30px;
-    border-radius: 30px;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    box-shadow: 0 7px 20px rgba(0,0,0,.2);
-}
-
-.main-btn:active {
-    transform: scale(.94);
-}
-
-
-/* MUSIC */
-
-.music-btn {
-    position: fixed;
-    right: 15px;
-    bottom: 15px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: 2px solid white;
-    background: rgba(100,0,15,.8);
-    color: white;
-    font-size: 20px;
-    z-index: 9999;
-}
-
-.music-btn.playing {
-    animation: musicPulse 1.2s infinite;
-}
-
-@keyframes musicPulse {
-    50% {
-        transform: scale(1.1);
+    if (target) {
+        target.classList.add("active");
+        window.scrollTo({
+            top: 0,
+            behavior: "instant"
+        });
     }
 }
 
 
-/* GAME */
+// ==========================================
+// MUSIC
+// ==========================================
 
-#gameScreen {
-    flex-direction: column;
-    align-items: center;
-    background:
-        radial-gradient(circle at center,#d51c37,#a5071c 55%,#70000e);
+const music = document.getElementById("music");
+const musicBtn = document.getElementById("musicBtn");
+
+if (music && musicBtn) {
+
+    music.volume = 0.5;
+
+    musicBtn.addEventListener("click", async function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        try {
+
+            if (music.paused) {
+
+                await music.play();
+
+                musicBtn.textContent = "❚❚";
+                musicBtn.classList.add("playing");
+
+            } else {
+
+                music.pause();
+
+                musicBtn.textContent = "♫";
+                musicBtn.classList.remove("playing");
+            }
+
+        } catch (error) {
+
+            console.error("Music error:", error);
+
+            alert(
+                "Musik belum bisa diputar. Pastikan file Sunflower.mp3 ada di repository."
+            );
+        }
+    });
+
+    music.addEventListener("play", function () {
+        musicBtn.textContent = "❚❚";
+        musicBtn.classList.add("playing");
+    });
+
+    music.addEventListener("pause", function () {
+        musicBtn.textContent = "♫";
+        musicBtn.classList.remove("playing");
+    });
 }
 
-.game-title {
-    position: absolute;
-    top: 5%;
-    width: 92%;
-    text-align: center;
-    z-index: 20;
+
+// ==========================================
+// SPIDER-MAN GAME
+// ==========================================
+
+const members = document.querySelectorAll(".member");
+const wrongMessage = document.getElementById("wrongMessage");
+const keyFound = document.getElementById("keyFound");
+const nextToFlowers = document.getElementById("nextToFlowers");
+
+members.forEach(member => {
+
+    member.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const memberNumber = this.dataset.member;
+
+        // ==================================
+        // MEMBER NOMOR 7 = BENAR
+        // ==================================
+
+        if (memberNumber === "7") {
+
+            if (keyFound) {
+                keyFound.classList.add("show");
+            }
+
+            return;
+        }
+
+
+        // ==================================
+        // MEMBER LAIN = SALAH
+        // ==================================
+
+        this.classList.remove("wrong");
+
+        // Memaksa browser mengulang animasi
+        void this.offsetWidth;
+
+        this.classList.add("wrong");
+
+        if (wrongMessage) {
+
+            wrongMessage.classList.add("show");
+
+            setTimeout(() => {
+                wrongMessage.classList.remove("show");
+            }, 900);
+        }
+
+    });
+
+});
+
+
+// ==========================================
+// LANJUT KE BUNGA
+// ==========================================
+
+if (nextToFlowers) {
+
+    nextToFlowers.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (keyFound) {
+            keyFound.classList.remove("show");
+        }
+
+        startFlowerTransition();
+
+    });
+
 }
 
-.game-title h1 {
-    font-size: clamp(18px,5vw,28px);
-    line-height: 1.25;
-    text-shadow: 0 3px 7px rgba(0,0,0,.3);
-}
 
+// ==========================================
+// FLOWER TRANSITION
+// ==========================================
 
-/* MEMBERS */
+const flowers = document.getElementById("flowers");
 
-.members {
-    position: absolute;
-    top: 19%;
-    left: 4%;
-    right: 4%;
-    height: 57%;
-    z-index: 10;
-}
+function startFlowerTransition() {
 
-.member {
-    position: absolute;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    width: 27vw;
-    max-width: 145px;
-    cursor: pointer;
-}
+    if (!flowers) return;
 
-.member img {
-    width: 100%;
-    display: block;
-    filter: drop-shadow(0 9px 7px rgba(0,0,0,.25));
-    animation: idle 2.8s ease-in-out infinite;
-}
+    showScreen("flowerScreen");
 
-.member-1 {
-    left: 0;
-    top: 0;
-}
+    flowers.innerHTML = "";
 
-.member-2 {
-    left: 36%;
-    top: 0;
-}
+    const flowerImages = [
+        "flower 1.png",
+        "flower 2.png",
+        "flower 3.png"
+    ];
 
-.member-3 {
-    right: 0;
-    top: 0;
-}
+    const totalFlowers = 100;
 
-.member-4 {
-    left: 5%;
-    top: 43%;
-}
+    for (let i = 0; i < totalFlowers; i++) {
 
-.member-5 {
-    left: 37%;
-    top: 42%;
-}
+        const flower = document.createElement("img");
 
-.member-6 {
-    right: 5%;
-    top: 43%;
-}
+        flower.className = "transition-flower";
 
-.member-7 {
-    left: 36%;
-    top: 77%;
-}
+        flower.src = flowerImages[i % 3];
 
-.member-1 img { animation-delay: 0s; }
-.member-2 img { animation-delay: -.5s; }
-.member-3 img { animation-delay: -1s; }
-.member-4 img { animation-delay: -1.4s; }
-.member-5 img { animation-delay: -.3s; }
-.member-6 img { animation-delay: -1.8s; }
-.member-7 img { animation-delay: -.8s; }
+        /*
+         * Posisi akhir bunga dibuat memenuhi seluruh layar.
+         * Awalnya akan muncul dari tengah.
+         */
 
-@keyframes idle {
-    0%,100% {
-        transform: translateY(0) rotate(-1deg);
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+
+        flower.style.setProperty("--x", `${x}vw`);
+        flower.style.setProperty("--y", `${y}vh`);
+
+        flower.style.animationDelay = `${i * 0.01}s`;
+
+        flowers.appendChild(flower);
     }
 
-    50% {
-        transform: translateY(-8px) rotate(1deg);
-    }
+
+    // Setelah bunga memenuhi layar,
+    // pindah ke PIN.
+
+    setTimeout(() => {
+
+        showScreen("pinScreen");
+
+        flowers.innerHTML = "";
+
+    }, 2600);
+
 }
 
 
-/* SPIDERMAN */
+// ==========================================
+// PIN
+// ==========================================
 
-.spiderman {
-    position: absolute;
-    width: 29vw;
-    max-width: 145px;
-    left: 50%;
-    bottom: 3%;
-    transform: translateX(-50%);
-    z-index: 12;
-    filter: drop-shadow(0 8px 7px rgba(0,0,0,.3));
+const pinInput = document.getElementById("pinInput");
+const pinBtn = document.getElementById("pinBtn");
+const pinError = document.getElementById("pinError");
+
+if (pinBtn) {
+
+    pinBtn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const enteredPin = pinInput
+            ? pinInput.value.trim()
+            : "";
+
+        if (enteredPin === "26092000") {
+
+            if (pinError) {
+                pinError.textContent = "";
+            }
+
+            showScreen("birthdayScreen");
+
+        } else {
+
+            if (pinError) {
+                pinError.textContent = "PIN salah ♡";
+            }
+
+            if (pinInput) {
+                pinInput.value = "";
+                pinInput.focus();
+            }
+        }
+
+    });
+
 }
 
 
-/* WRONG */
+// Bisa tekan Enter setelah memasukkan PIN
 
-.wrong-message {
-    position: fixed;
-    top: 43%;
-    left: 50%;
-    transform: translate(-50%,-50%) scale(0);
-    opacity: 0;
-    z-index: 100;
-    text-align: center;
-    pointer-events: none;
-}
+if (pinInput) {
 
-.wrong-message span {
-    display: block;
-    font-family: Arial,sans-serif;
-    font-size: 70px;
-    font-weight: bold;
-}
+    pinInput.addEventListener("keydown", function (e) {
 
-.wrong-message p {
-    font-size: 24px;
-    font-weight: bold;
-}
+        if (e.key === "Enter") {
 
-.wrong-message.show {
-    animation: wrong .8s ease;
-}
+            e.preventDefault();
 
-@keyframes wrong {
-    0% {
-        opacity: 0;
-        transform: translate(-50%,-50%) scale(.3);
-    }
+            if (pinBtn) {
+                pinBtn.click();
+            }
+        }
 
-    25% {
-        opacity: 1;
-        transform: translate(-50%,-50%) scale(1.15);
-    }
+    });
 
-    70% {
-        opacity: 1;
-        transform: translate(-50%,-50%) scale(1);
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-.member.shake {
-    animation: shake .45s ease !important;
-}
-
-@keyframes shake {
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-7px); }
-    80% { transform: translateX(6px); }
 }
 
 
-/* KEY */
+// ==========================================
+// BIRTHDAY
+// ==========================================
 
-.key-found {
-    position: fixed;
-    inset: 0;
-    background: rgba(60,0,10,.75);
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 200;
-}
+const birthdayNext = document.getElementById("birthdayNext");
 
-.key-found.show {
-    display: flex;
-}
+if (birthdayNext) {
 
-.key-box {
-    animation: keyAppear .8s ease;
-}
+    birthdayNext.addEventListener("click", function (e) {
 
-.key-box img {
-    width: 45vw;
-    max-width: 220px;
-    filter: drop-shadow(0 10px 12px rgba(0,0,0,.35));
-}
+        e.preventDefault();
+        e.stopPropagation();
 
-.key-found h2 {
-    font-size: 34px;
-    margin: 10px 0 22px;
-}
+        showScreen("letterScreen");
 
-@keyframes keyAppear {
-    0% {
-        opacity: 0;
-        transform: scale(.1) rotate(-30deg);
-    }
+    });
 
-    60% {
-        transform: scale(1.25) rotate(8deg);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-    }
 }
 
 
-/* FLOWERS */
+// ==========================================
+// LETTER
+// ==========================================
 
-.flower-screen {
-    background: #8d0718;
-    align-items: center;
-    justify-content: center;
-    z-index: 500;
+const letterNext = document.getElementById("letterNext");
+
+if (letterNext) {
+
+    letterNext.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        showScreen("memoryScreen");
+
+        currentPhoto = 0;
+
+        updateMemory();
+
+    });
+
 }
 
-#flowerContainer {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-}
 
-.flower {
-    position: absolute;
+// ==========================================
+// MEMORIES
+// ==========================================
 
-    width: clamp(105px,28vw,180px);
+const memories = [
 
-    left: calc(50% + var(--x));
-    top: calc(50% + var(--y));
+    {
+        image: "foto 1.jpeg",
+        caption: "Some moments are small, but they become memories forever. ♡"
+    },
 
-    transform:
-        translate(-50%,-50%)
-        scale(.02);
+    {
+        image: "foto 2.jpeg",
+        caption: "Growing up with you is one of my favorite things. ♡"
+    },
 
-    opacity: 0;
+    {
+        image: "foto 3.jpeg",
+        caption: "A little moment that I will always remember."
+    },
 
-    animation:
-        bloom 1.55s
-        cubic-bezier(.2,.75,.25,1)
-        forwards;
+    {
+        image: "foto 4.jpeg",
+        caption: "Thank you for all the laughs we have shared."
+    },
 
-    animation-delay: var(--delay);
-}
+    {
+        image: "foto 5.jpeg",
+        caption: "Life feels a little warmer with you around. ♡"
+    },
 
-.flower img {
-    display: block;
-    width: 100%;
-}
+    {
+        image: "foto 6.jpeg",
+        caption: "Another memory I want to keep forever."
+    },
 
-@keyframes bloom {
+    {
+        image: "foto 7.jpeg",
+        caption: "From little moments to memories that last forever."
+    },
 
-    0% {
-        opacity: 0;
-        transform:
-            translate(-50%,-50%)
-            scale(.02)
-            rotate(-15deg);
+    {
+        image: "foto 8.jpeg",
+        caption: "I'm really lucky to call you my sister. ♡"
+    },
+
+    {
+        image: "foto 9.jpeg",
+        caption: "Here's to all the memories we already have."
+    },
+
+    {
+        image: "foto 10.jpeg",
+        caption: "And here's to many more memories together. ♡"
     }
 
-    15% {
-        opacity: 1;
+];
+
+let currentPhoto = 0;
+
+const memoryImage = document.getElementById("memoryImage");
+const memoryCaption = document.getElementById("memoryCaption");
+const memoryCounter = document.getElementById("memoryCounter");
+
+const prevMemory = document.getElementById("prevMemory");
+const nextMemory = document.getElementById("nextMemory");
+
+const memoryNext = document.getElementById("memoryNext");
+
+
+function updateMemory() {
+
+    if (!memoryImage) return;
+
+    const memory = memories[currentPhoto];
+
+    // BENAR-BENAR mengganti file gambar
+    memoryImage.src = memory.image;
+
+    if (memoryCaption) {
+        memoryCaption.textContent = memory.caption;
     }
 
-    100% {
-        opacity: 1;
-        transform:
-            translate(-50%,-50%)
-            scale(var(--scale))
-            rotate(var(--rotation));
-    }
-}
-
-
-/* PIN */
-
-.pin-screen {
-    background:
-        radial-gradient(circle at center,#d31b36,#a1081c 55%,#73000f);
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.sparkles {
-    position: absolute;
-    inset: 0;
-    background-image:
-        radial-gradient(circle,white 1px,transparent 2px),
-        radial-gradient(circle,rgba(255,255,255,.8) 1px,transparent 2px),
-        radial-gradient(circle,rgba(255,255,255,.5) 1px,transparent 2px);
-    background-size: 47px 53px,71px 67px,93px 81px;
-    opacity: .8;
-}
-
-.pin-content {
-    position: relative;
-    width: 88%;
-    max-width: 400px;
-    z-index: 2;
-}
-
-.pin-icon {
-    font-size: 48px;
-    margin-bottom: 10px;
-}
-
-.pin-content h1 {
-    font-size: 29px;
-    margin-bottom: 8px;
-}
-
-.pin-content > p {
-    font-size: 15px;
-    margin-bottom: 20px;
-}
-
-#pinInput {
-    width: 100%;
-    height: 58px;
-    border: 2px solid rgba(255,255,255,.8);
-    border-radius: 15px;
-    background: rgba(255,255,255,.15);
-    color: white;
-    text-align: center;
-    font-size: 27px;
-    letter-spacing: 8px;
-    outline: none;
-    margin-bottom: 14px;
-}
-
-#pinInput::placeholder {
-    color: rgba(255,255,255,.7);
-}
-
-.pin-error {
-    display: none;
-    color: #ffe0e0 !important;
-}
-
-.pin-error.show {
-    display: block;
-}
-
-
-/* BIRTHDAY */
-
-.birthday-screen {
-    background:
-        url("background.jpg")
-        center/cover
-        no-repeat;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.birthday-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(50,0,10,.42);
-}
-
-.birthday-content {
-    position: relative;
-    z-index: 2;
-}
-
-.birthday-content h1 {
-    font-size: clamp(32px,9vw,58px);
-    line-height: 1.1;
-    text-shadow: 0 5px 18px rgba(0,0,0,.5);
-}
-
-.birthday-content .main-btn {
-    margin-top: 30px;
-}
-
-
-/* LETTER */
-
-.content-screen {
-    background: linear-gradient(145deg,#b30b22,#780011);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
-
-.letter-card,
-.closing-card {
-    width: 100%;
-    max-width: 500px;
-    max-height: 88dvh;
-    overflow-y: auto;
-    background: rgba(255,255,255,.97);
-    color: #5e0915;
-    border-radius: 25px;
-    padding: 30px 24px;
-    text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,.3);
-}
-
-.small-title {
-    font-family: Arial,sans-serif;
-    font-size: 11px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    color: #a2091d;
-    margin-bottom: 10px;
-}
-
-.letter-card h1,
-.closing-card h1 {
-    font-size: 28px;
-    margin-bottom: 22px;
-}
-
-.letter-text {
-    text-align: left;
-    line-height: 1.65;
-    font-size: 15px;
-}
-
-.letter-text p {
-    margin-bottom: 15px;
-}
-
-.signature {
-    text-align: right;
-    font-style: italic;
-}
-
-.letter-card .main-btn,
-.closing-card .main-btn {
-    margin-top: 8px;
-}
-
-
-/* MEMORIES */
-
-.memory-screen {
-    background:
-        radial-gradient(circle at center,#d51a35,#98071a 60%,#71000e);
-    flex-direction: column;
-    align-items: center;
-    padding: 25px 15px 20px;
-}
-
-.memory-header {
-    text-align: center;
-}
-
-.memory-header p {
-    font-family: Arial,sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    margin-bottom: 8px;
-}
-
-.memory-header h1 {
-    font-size: 25px;
-    margin-bottom: 6px;
-}
-
-#photoCounter {
-    font-family: Arial,sans-serif;
-    font-size: 13px;
-}
-
-.polaroid-area {
-    flex: 1;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-}
-
-.polaroid {
-    width: min(80vw,340px);
-    background: white;
-    padding: 13px 13px 24px;
-    box-shadow: 0 18px 35px rgba(0,0,0,.3);
-    transform: rotate(-1.5deg);
-}
-
-.polaroid.change {
-    animation: photoChange .45s ease;
-}
-
-@keyframes photoChange {
-
-    0% {
-        opacity: .3;
-        transform: rotate(-3deg) scale(.96);
+    if (memoryCounter) {
+        memoryCounter.textContent =
+            `${currentPhoto + 1} / ${memories.length}`;
     }
 
-    50% {
-        opacity: .7;
-        transform: rotate(3deg) scale(1.02);
-    }
-
-    100% {
-        opacity: 1;
-        transform: rotate(-1.5deg) scale(1);
-    }
-}
-
-.photo-holder {
-    width: 100%;
-    aspect-ratio: 1;
-    overflow: hidden;
-    background: #eee;
-}
-
-.photo-holder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.caption-holder {
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-top: 12px;
-}
-
-.caption-holder p {
-    color: #3d2222;
-    font-family: "Comic Sans MS",cursive;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1.4;
-}
-
-.memory-controls {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding-top: 10px;
-}
-
-.circle-btn {
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.7);
-    background: rgba(255,255,255,.15);
-    color: white;
-    font-size: 27px;
-}
-
-.memory-controls .main-btn {
-    min-width: 110px;
 }
 
 
-/* CLOSING */
+// ==========================================
+// FOTO SEBELUMNYA
+// ==========================================
 
-.heart,
-.final-heart {
-    font-size: 60px;
-    animation: heartBeat 1.5s infinite;
+if (prevMemory) {
+
+    prevMemory.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentPhoto > 0) {
+
+            currentPhoto--;
+
+            updateMemory();
+
+        }
+
+    });
+
 }
 
-@keyframes heartBeat {
-    50% {
-        transform: scale(1.1);
-    }
+
+// ==========================================
+// FOTO BERIKUTNYA
+// ==========================================
+
+if (nextMemory) {
+
+    nextMemory.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (currentPhoto < memories.length - 1) {
+
+            currentPhoto++;
+
+            updateMemory();
+
+        }
+
+    });
+
 }
 
-.closing-card > p:not(.small-title) {
-    line-height: 1.65;
-    font-size: 15px;
-    margin-bottom: 15px;
+
+// ==========================================
+// NEXT DARI MEMORY
+// ==========================================
+
+if (memoryNext) {
+
+    memoryNext.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        showScreen("closingScreen");
+
+    });
+
 }
 
 
-/* FINAL */
+// ==========================================
+// CLOSING
+// ==========================================
 
-.final-screen {
-    background:
-        radial-gradient(circle at center,#d51b36,#99091c 55%,#70000e);
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+const closingNext = document.getElementById("closingNext");
+
+if (closingNext) {
+
+    closingNext.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        showScreen("finalScreen");
+
+    });
+
 }
 
-.final-content {
-    width: 90%;
-    max-width: 500px;
-}
 
-.final-heart {
-    margin-bottom: 25px;
-}
+// ==========================================
+// PRELOAD GAMBAR
+// ==========================================
 
-.final-content p {
-    font-size: 19px;
-    line-height: 1.55;
-}
+const imagesToPreload = [
 
-.final-line {
-    width: 60px;
-    height: 1px;
-    background: rgba(255,255,255,.7);
-    margin: 25px auto;
-}
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png",
+    "5.png",
+    "6.png",
+    "7.png",
 
-.final-content h1 {
-    font-size: 28px;
-}
+    "spiderman.png",
+    "kunci.png",
 
-.final-content .from {
-    margin-top: 20px;
-    font-size: 15px;
-    opacity: .8;
-}
+    "flower 1.png",
+    "flower 2.png",
+    "flower 3.png",
+
+    "background.jpg",
+
+    "foto 1.jpeg",
+    "foto 2.jpeg",
+    "foto 3.jpeg",
+    "foto 4.jpeg",
+    "foto 5.jpeg",
+    "foto 6.jpeg",
+    "foto 7.jpeg",
+    "foto 8.jpeg",
+    "foto 9.jpeg",
+    "foto 10.jpeg"
+
+];
+
+imagesToPreload.forEach(src => {
+
+    const img = new Image();
+
+    img.src = src;
+
+});
+
+
+// ==========================================
+// START
+// ==========================================
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    showScreen("gameScreen");
+
+    currentPhoto = 0;
+
+    updateMemory();
+
+});
