@@ -1,971 +1,370 @@
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  width: 100%;
-  height: 100%;
-}
-
-body {
-  overflow: hidden;
-  font-family: Georgia, "Times New Roman", serif;
-  background: #8d0d1d;
-  color: white;
-}
-
-
-/* =========================
-   SCREEN SYSTEM
-========================= */
-
-.screen {
-  position: fixed;
-  inset: 0;
-
-  width: 100%;
-  height: 100dvh;
-
-  display: none;
-
-  overflow: hidden;
-}
-
-.screen.active {
-  display: flex;
-}
-
-
-/* =========================
+/* ==================================================
    MUSIC
-========================= */
+================================================== */
 
-.music-btn {
-  position: fixed;
+const music = document.getElementById("music");
+const musicButton = document.getElementById("musicButton");
 
-  right: 16px;
-  bottom: 16px;
+let musicPlaying = false;
 
-  z-index: 9999;
+musicButton.addEventListener("click", () => {
 
-  width: 44px;
-  height: 44px;
+    if (!musicPlaying) {
 
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.5);
+        music.play().then(() => {
 
-  background: rgba(80,0,10,.75);
+            musicPlaying = true;
+            musicButton.textContent = "❚❚";
 
-  color: white;
+        }).catch(() => {
 
-  font-size: 19px;
+            musicPlaying = false;
 
-  cursor: pointer;
+        });
+
+    } else {
+
+        music.pause();
+
+        musicPlaying = false;
+
+        musicButton.textContent = "♫";
+
+    }
+
+});
+
+
+/* ==================================================
+   SCREEN SYSTEM
+================================================== */
+
+function showScreen(id) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    const target = document.getElementById(id);
+
+    target.classList.add("active");
+
 }
 
 
-/* =========================
+/* ==================================================
    GAME
-========================= */
+================================================== */
 
-#gameScreen {
-  background:
-    linear-gradient(
-      180deg,
-      #ba1229,
-      #8b0c1b
-    );
+const members =
+    document.querySelectorAll(".member");
 
-  justify-content: center;
-  align-items: center;
-}
+const gameFeedback =
+    document.getElementById("gameFeedback");
 
-.game-container {
-  position: relative;
+const key =
+    document.getElementById("key");
 
-  width: min(95vw, 520px);
-  height: 100%;
+const gameNext =
+    document.getElementById("gameNext");
 
-  text-align: center;
-
-  padding-top: 25px;
-}
-
-.game-container h1 {
-  position: relative;
-  z-index: 20;
-
-  margin: 5px auto;
-
-  max-width: 450px;
-
-  font-size: clamp(22px, 6vw, 34px);
-
-  line-height: 1.15;
-}
-
-.subtitle {
-  position: relative;
-  z-index: 20;
-
-  margin: 5px;
-
-  font-size: 14px;
-}
+let gameCompleted = false;
 
 
-/* MEMBERS */
+members.forEach(member => {
 
-.members {
-  position: absolute;
+    member.addEventListener("click", () => {
 
-  top: 120px;
-  left: 5%;
-  right: 5%;
-  bottom: 105px;
-}
+        if (gameCompleted) return;
 
-.member {
-  position: absolute;
+        const number =
+            member.dataset.number;
 
-  padding: 0;
+        /* MEMBER 7 = PEMBAWA KUNCI */
 
-  border: none;
+        if (number === "7") {
 
-  background: transparent;
+            gameCompleted = true;
 
-  cursor: pointer;
+            member.classList.add("found");
 
-  animation:
-    floating 3.8s ease-in-out infinite;
-}
+            gameFeedback.textContent =
+                "Ketemu! ✨";
 
-.member img {
-  width: 100%;
+            key.classList.add("show");
 
-  display: block;
+            members.forEach(item => {
+                item.style.pointerEvents = "none";
+            });
 
-  filter:
-    drop-shadow(
-      0 8px 7px rgba(0,0,0,.18)
-    );
-}
+            setTimeout(() => {
 
+                gameNext.classList.remove("hidden");
 
-/* POSITIONS */
+            }, 600);
 
-.member1 {
-  width: 26%;
+        } else {
 
-  left: 1%;
-  top: 2%;
+            gameFeedback.textContent =
+                "Bukan dia! ✕";
 
-  animation-delay: -.5s;
-}
+            member.classList.remove("wrong");
 
-.member2 {
-  width: 25%;
+            void member.offsetWidth;
 
-  left: 38%;
-  top: 0;
+            member.classList.add("wrong");
 
-  animation-delay: -1.2s;
-}
+        }
 
-.member3 {
-  width: 25%;
+    });
 
-  right: 1%;
-  top: 3%;
-
-  animation-delay: -2s;
-}
-
-.member4 {
-  width: 25%;
-
-  left: 6%;
-  top: 36%;
-
-  animation-delay: -2.7s;
-}
-
-.member5 {
-  width: 25%;
-
-  right: 6%;
-  top: 36%;
-
-  animation-delay: -1.8s;
-}
-
-.member6 {
-  width: 25%;
-
-  left: 28%;
-  top: 31%;
-
-  animation-delay: -.8s;
-}
-
-.member7 {
-  width: 27%;
-
-  left: 37%;
-  bottom: 0;
-
-  animation-delay: -2.5s;
-}
+});
 
 
-@keyframes floating {
+/* ==================================================
+   FLOWER TRANSITION
+================================================== */
 
-  0%,
-  100% {
-    transform:
-      translateY(0)
-      rotate(-1deg);
-  }
+gameNext.addEventListener("click", () => {
 
-  50% {
-    transform:
-      translateY(-13px)
-      rotate(1deg);
-  }
+    showScreen("flowerScreen");
+
+    createFlowers();
+
+    setTimeout(() => {
+
+        showScreen("pinScreen");
+
+    }, 1450);
+
+});
+
+
+function createFlowers() {
+
+    const container =
+        document.getElementById("flowers");
+
+    container.innerHTML = "";
+
+    const flowerImages = [
+        "flower 1.png",
+        "flower 2.png",
+        "flower 3.png"
+    ];
+
+    /*
+       Semua bunga muncul dari BEBERAPA ARAH:
+       kanan atas,kanan bawah,kiri atas,kiri bawah.
+
+       Mereka membesar dan overlap.
+       Tidak menyebar random tapi berpola lingkaran sehingga memenuhi layar.
+    */
+
+    for (let i = 0; i < 9; i++) {
+
+        const flower =
+            document.createElement("img");
+
+        flower.className = "flower";
+
+        flower.src =
+            flowerImages[i % 3];
+
+        container.appendChild(flower);
+
+    }
 
 }
 
 
-/* WRONG */
-
-.wrong-message {
-  position: absolute;
-
-  z-index: 100;
-
-  left: 50%;
-  top: 48%;
-
-  transform:
-    translate(-50%, -50%)
-    scale(.7);
-
-  padding: 10px 20px;
-
-  border-radius: 50px;
-
-  background: white;
-
-  color: #ae1026;
-
-  font-weight: bold;
-
-  opacity: 0;
-
-  pointer-events: none;
-}
-
-.wrong-message.show {
-  animation: wrongPopup .7s ease;
-}
-
-
-@keyframes wrongPopup {
-
-  0% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      scale(.7);
-  }
-
-  25% {
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      scale(1.05);
-  }
-
-  70% {
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      scale(1);
-  }
-
-  100% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      scale(.95);
-  }
-
-}
-
-
-.member.wrong {
-  animation: shake .45s ease;
-}
-
-@keyframes shake {
-
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-
-  25% {
-    transform:
-      translateX(-8px)
-      rotate(-4deg);
-  }
-
-  50% {
-    transform:
-      translateX(8px)
-      rotate(4deg);
-  }
-
-  75% {
-    transform:
-      translateX(-5px)
-      rotate(-2deg);
-  }
-
-}
-
-
-/* SPIDERMAN */
-
-.spiderman {
-  position: absolute;
-
-  z-index: 30;
-
-  left: 50%;
-  bottom: 12px;
-
-  transform: translateX(-50%);
-
-  width: min(32vw, 150px);
-
-  filter:
-    drop-shadow(
-      0 8px 8px rgba(0,0,0,.25)
-    );
-
-  animation:
-    spiderFloat 3s ease-in-out infinite;
-}
-
-
-@keyframes spiderFloat {
-
-  0%,
-  100% {
-    transform:
-      translateX(-50%)
-      translateY(0);
-  }
-
-  50% {
-    transform:
-      translateX(-50%)
-      translateY(-9px);
-  }
-
-}
-
-
-/* KEY */
-
-.key-found {
-  position: absolute;
-
-  z-index: 200;
-
-  inset: 0;
-
-  display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-  background:
-    rgba(90,0,12,.78);
-
-  opacity: 0;
-
-  pointer-events: none;
-}
-
-.key-found.show {
-  opacity: 1;
-
-  pointer-events: auto;
-}
-
-.key-found img {
-  width: min(48vw, 220px);
-
-  animation:
-    keyAppear .7s
-    cubic-bezier(.2,1.5,.4,1);
-}
-
-.key-found h2 {
-  margin: 5px 0 15px;
-
-  font-size: 26px;
-}
-
-
-@keyframes keyAppear {
-
-  from {
-    transform:
-      scale(.2)
-      rotate(-30deg);
-
-    opacity: 0;
-  }
-
-  to {
-    transform:
-      scale(1)
-      rotate(0);
-
-    opacity: 1;
-  }
-
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-.main-button {
-  border: none;
-
-  border-radius: 50px;
-
-  padding: 11px 28px;
-
-  background: white;
-
-  color: #971124;
-
-  font-weight: bold;
-
-  letter-spacing: .5px;
-
-  box-shadow:
-    0 8px 20px rgba(0,0,0,.2);
-
-  cursor: pointer;
-}
-
-.main-button:active {
-  transform: scale(.95);
-}
-
-
-/* =========================
-   FLOWERS
-========================= */
-
-.flower-screen {
-  background: #8d0d1d;
-}
-
-#flowerContainer {
-  position: absolute;
-
-  inset: 0;
-
-  overflow: hidden;
-
-  background: #8d0d1d;
-}
-
-.flower {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  width: clamp(
-    100px,
-    27vw,
-    185px
-  );
-
-  height: auto;
-
-  opacity: 0;
-
-  transform:
-    translate(-50%, -50%)
-    scale(.03);
-
-  animation:
-    flowerExplosion
-    1.75s
-    cubic-bezier(.12,.8,.2,1)
-    forwards;
-
-  will-change:
-    transform,
-    opacity;
-}
-
-
-@keyframes flowerExplosion {
-
-  0% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, -50%)
-      translate(0,0)
-      scale(.03)
-      rotate(0);
-  }
-
-  15% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 1;
-
-    transform:
-      translate(-50%, -50%)
-      translate(var(--x), var(--y))
-      scale(var(--scale))
-      rotate(var(--rotate));
-  }
-
-}
-
-
-/* =========================
+/* ==================================================
    PIN
-========================= */
+================================================== */
 
-.pin-screen {
-  background: #8d0d1d;
+const pinInput =
+    document.getElementById("pinInput");
 
-  justify-content: center;
-  align-items: center;
-}
+const pinButton =
+    document.getElementById("pinButton");
 
-.glitter {
-  position: absolute;
+const pinFeedback =
+    document.getElementById("pinFeedback");
 
-  inset: 0;
+const correctPin =
+    "26092000";
 
-  background-image:
-    radial-gradient(
-      circle,
-      white 0 1px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle,
-      rgba(255,220,225,.8) 0 1px,
-      transparent 2px
-    ),
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.7) 0 1px,
-      transparent 2px
-    );
 
-  background-size:
-    45px 45px,
-    73px 73px,
-    100px 100px;
+function checkPin() {
 
-  opacity: .65;
-}
+    const entered =
+        pinInput.value.trim();
 
-.pin-box {
-  position: relative;
+    if (entered === correctPin) {
 
-  z-index: 5;
+        pinFeedback.textContent =
+            "Benar ♡";
 
-  width: min(88vw, 380px);
+        /*
+           LANGSUNG PINDAH.
+           Tidak scroll.
+        */
 
-  padding: 32px 24px;
+        showScreen("birthdayScreen");
 
-  text-align: center;
+        return;
 
-  border-radius: 24px;
+    }
 
-  background:
-    rgba(105,0,15,.72);
+    pinFeedback.textContent =
+        "Coba lagi ✨";
 
-  border:
-    1px solid rgba(255,255,255,.25);
+    pinInput.value = "";
 
-  box-shadow:
-    0 20px 50px rgba(0,0,0,.25);
-}
+    pinInput.focus();
 
-.pin-box h2 {
-  margin-top: 0;
-
-  font-size: 27px;
-}
-
-#pinInput {
-  width: 100%;
-
-  padding: 13px;
-
-  border: none;
-
-  border-radius: 12px;
-
-  outline: none;
-
-  text-align: center;
-
-  font-size: 22px;
-
-  letter-spacing: 7px;
-
-  color: #8d0d1d;
-
-  margin-bottom: 10px;
-}
-
-#pinError {
-  min-height: 18px;
-
-  font-size: 13px;
-
-  color: #ffd9de;
 }
 
 
-/* =========================
-   BIRTHDAY
-========================= */
-
-.birthday-screen {
-  background-image:
-    url("background.jpg");
-
-  background-size: cover;
-
-  background-position: center;
-}
-
-.birthday-overlay {
-  width: 100%;
-  height: 100%;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-
-  background:
-    rgba(65,0,10,.4);
-}
-
-.birthday-content h1 {
-  font-size:
-    clamp(35px, 10vw, 65px);
-
-  line-height: 1.05;
-
-  margin-bottom: 30px;
-
-  text-shadow:
-    0 5px 20px rgba(0,0,0,.4);
-}
+pinButton.addEventListener(
+    "click",
+    checkPin
+);
 
 
-/* =========================
-   LETTER
-========================= */
+pinInput.addEventListener(
+    "keydown",
+    event => {
 
-.content-screen {
-  background:
-    linear-gradient(
-      180deg,
-      #b51228,
-      #8d0d1d
-    );
+        if (event.key === "Enter") {
+            checkPin();
+        }
 
-  justify-content: center;
-  align-items: center;
-
-  padding: 25px;
-
-  overflow-y: auto;
-}
-
-.content-card {
-  width: min(92vw, 650px);
-
-  max-height: 90vh;
-
-  overflow-y: auto;
-
-  padding: 30px 25px;
-
-  border-radius: 25px;
-
-  background: white;
-
-  color: #5d111c;
-
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.2);
-
-  text-align: center;
-}
-
-.small-title {
-  color: #a51a2c;
-
-  font-size: 11px;
-
-  letter-spacing: 2px;
-
-  font-weight: bold;
-}
-
-.content-card h2 {
-  color: #8d0d1d;
-
-  font-size:
-    clamp(28px,7vw,43px);
-
-  margin-bottom: 20px;
-}
-
-.letter {
-  text-align: left;
-
-  line-height: 1.75;
-
-  font-size: 16px;
-}
+    }
+);
 
 
-/* =========================
+/* ==================================================
+   STORY NAVIGATION
+================================================== */
+
+const storyScreens = [
+    "birthdayScreen",
+    "letterScreen",
+    "memoryScreen",
+    "closingScreen",
+    "finalScreen"
+];
+
+let storyIndex = 0;
+
+
+document.querySelectorAll(".story-next").forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        storyIndex++;
+
+        if (storyIndex >= storyScreens.length) {
+            storyIndex = storyScreens.length - 1;
+        }
+
+        showScreen(
+            storyScreens[storyIndex]
+        );
+
+    });
+
+});
+
+
+/* ==================================================
    MEMORIES
-========================= */
+================================================== */
 
-.memory-screen {
-  background:
-    linear-gradient(
-      180deg,
-      #b51228,
-      #8d0d1d
-    );
-
-  flex-direction: column;
-
-  justify-content: center;
-  align-items: center;
-
-  gap: 16px;
-
-  padding: 20px;
-}
-
-.memory-title {
-  text-align: center;
-}
-
-.memory-title p {
-  font-size: 11px;
-
-  letter-spacing: 2px;
-}
-
-.memory-title h2 {
-  margin: 5px 0;
-
-  font-size:
-    clamp(27px,7vw,43px);
-}
-
-.polaroid {
-  width: min(82vw, 360px);
-
-  padding:
-    11px 11px 0;
-
-  background: white;
-
-  color: #4d1520;
-
-  box-shadow:
-    0 18px 35px rgba(0,0,0,.3);
-
-  transform: rotate(-1deg);
-
-  transition:
-    transform .25s ease;
-}
-
-.polaroid img {
-  display: block;
-
-  width: 100%;
-
-  aspect-ratio: 1 / 1.05;
-
-  object-fit: cover;
-}
-
-.caption {
-  min-height: 72px;
-
-  padding: 12px 8px;
-
-  display: flex;
-
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-}
-
-.caption p {
-  margin: 0;
-
-  font-family:
-    "Comic Sans MS",
-    cursive;
-
-  font-size: 14px;
-}
-
-.memory-controls {
-  display: flex;
-
-  align-items: center;
-
-  gap: 18px;
-}
-
-.memory-controls button {
-  width: 40px;
-  height: 40px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background: white;
-
-  color: #941124;
-
-  font-size: 28px;
-}
-
-#memoryNumber {
-  min-width: 55px;
-
-  text-align: center;
-}
+const photos = [
+    "foto 1.jpeg",
+    "foto 2.jpeg",
+    "foto 3.jpeg",
+    "foto 4.jpeg",
+    "foto 5.jpeg",
+    "foto 6.jpeg",
+    "foto 7.jpeg",
+    "foto 8.jpeg",
+    "foto 9.jpeg",
+    "foto 10.jpeg"
+];
 
 
-/* =========================
-   FINAL
-========================= */
-
-.final-screen {
-  background:
-    linear-gradient(
-      180deg,
-      #b51228,
-      #720916
-    );
-
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-
-  padding: 25px;
-}
-
-.final-content {
-  max-width: 650px;
-}
-
-.big-heart {
-  font-size: 75px;
-
-  margin-bottom: 15px;
-
-  animation:
-    heartbeat 1.7s
-    ease-in-out
-    infinite;
-}
-
-.final-content p {
-  font-size:
-    clamp(18px,4.5vw,27px);
-
-  line-height: 1.7;
-}
-
-.final-content h2 {
-  font-size:
-    clamp(25px,6vw,40px);
-}
+const captions = [
+    "pretty, as always.",
+    "cute without even trying.",
+    "the sweetest sister.",
+    "my favorite person to annoy.",
+    "one of my favorite memories.",
+    "you looked so happy here.",
+    "a little moment I'll always remember.",
+    "thank you for all the memories.",
+    "life is better with a sister like you.",
+    "and this is just one of many memories ♡"
+];
 
 
-@keyframes heartbeat {
+let photoIndex = 0;
 
-  0%,
-  100% {
-    transform: scale(1);
-  }
 
-  50% {
-    transform: scale(1.12);
-  }
+const memoryImage =
+    document.getElementById("memoryImage");
+
+const memoryCaption =
+    document.getElementById("memoryCaption");
+
+const photoNumber =
+    document.getElementById("photoNumber");
+
+
+function updatePhoto() {
+
+    memoryImage.src =
+        photos[photoIndex];
+
+    memoryCaption.textContent =
+        captions[photoIndex];
+
+    photoNumber.textContent =
+        `${photoIndex + 1} / ${photos.length}`;
 
 }
 
 
-@media (max-height: 700px) {
+document
+    .getElementById("nextPhoto")
+    .addEventListener("click", () => {
 
-  .members {
-    top: 95px;
-    bottom: 90px;
-  }
+        photoIndex++;
 
-  .game-container h1 {
-    font-size: 20px;
-  }
+        if (photoIndex >= photos.length) {
+            photoIndex = 0;
+        }
 
-  .spiderman {
-    width: 105px;
-  }
+        updatePhoto();
 
-}
+    });
+
+
+document
+    .getElementById("previousPhoto")
+    .addEventListener("click", () => {
+
+        photoIndex--;
+
+        if (photoIndex < 0) {
+            photoIndex = photos.length - 1;
+        }
+
+        updatePhoto();
+
+    });
+
+
+updatePhoto();
