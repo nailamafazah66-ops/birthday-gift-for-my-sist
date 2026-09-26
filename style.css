@@ -1,0 +1,915 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Georgia, "Times New Roman", serif;
+    background: #9d1024;
+}
+
+button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+}
+
+
+/* ==================================================
+   SCREEN SYSTEM
+================================================== */
+
+.screen {
+    position: fixed;
+    inset: 0;
+
+    width: 100vw;
+    height: 100dvh;
+
+    display: none;
+
+    overflow: hidden;
+}
+
+.screen.active {
+    display: flex;
+}
+
+
+/* ==================================================
+   MUSIC
+================================================== */
+
+.music-button {
+    position: fixed;
+
+    right: 16px;
+    bottom: 16px;
+
+    width: 43px;
+    height: 43px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.94);
+    color: #a41429;
+
+    font-size: 19px;
+
+    z-index: 9999;
+
+    box-shadow: 0 5px 18px rgba(0,0,0,.2);
+}
+
+
+/* ==================================================
+   GENERAL BUTTON
+================================================== */
+
+.button {
+    padding: 12px 25px;
+
+    border-radius: 30px;
+
+    background: white;
+
+    color: #a31328;
+
+    font-size: 13px;
+    font-weight: bold;
+
+    letter-spacing: 1px;
+
+    box-shadow: 0 6px 20px rgba(0,0,0,.18);
+
+    transition: transform .2s ease;
+}
+
+.button:active {
+    transform: scale(.96);
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* ==================================================
+   GAME
+================================================== */
+
+#gameScreen {
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            #e52c45,
+            transparent 48%
+        ),
+        #a60f25;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    color: white;
+
+    padding-top: 30px;
+}
+
+.game-header {
+    text-align: center;
+
+    z-index: 10;
+
+    padding: 0 15px;
+}
+
+.game-header h1 {
+    font-size: 27px;
+
+    margin-bottom: 7px;
+}
+
+.game-header p {
+    font-size: 16px;
+}
+
+.game-board {
+    position: relative;
+
+    width: min(94vw, 430px);
+
+    height: 530px;
+
+    margin-top: 3px;
+}
+
+.member {
+    position: absolute;
+
+    width: 30%;
+
+    height: 125px;
+
+    background: transparent;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 3;
+
+    transition: transform .2s ease;
+}
+
+.member img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 5px 4px rgba(0,0,0,.22));
+}
+
+.member:active {
+    transform: scale(.94);
+}
+
+
+/* Member positions */
+
+.member:nth-child(1) {
+    left: 2%;
+    top: 25px;
+}
+
+.member:nth-child(2) {
+    left: 35%;
+    top: 25px;
+}
+
+.member:nth-child(3) {
+    right: 2%;
+    top: 25px;
+}
+
+.member:nth-child(4) {
+    left: 10%;
+    top: 155px;
+}
+
+.member:nth-child(5) {
+    right: 10%;
+    top: 155px;
+}
+
+.member:nth-child(6) {
+    left: 18%;
+    top: 285px;
+}
+
+.member:nth-child(7) {
+    right: 18%;
+    top: 285px;
+}
+
+
+/* Spider-Man */
+
+.spiderman {
+    position: absolute;
+
+    width: 125px;
+
+    left: 50%;
+    bottom: 0;
+
+    transform: translateX(-50%);
+
+    z-index: 5;
+
+    filter:
+        drop-shadow(0 7px 5px rgba(0,0,0,.25));
+}
+
+
+/* Key */
+
+.key {
+    position: absolute;
+
+    width: 105px;
+
+    left: 50%;
+    top: 205px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    opacity: 0;
+
+    z-index: 8;
+}
+
+.key.show {
+    animation: keyShow .65s ease forwards;
+}
+
+@keyframes keyShow {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            scale(0)
+            rotate(-20deg);
+    }
+
+    60% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1.3)
+            rotate(8deg);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(1)
+            rotate(0);
+    }
+}
+
+
+#gameFeedback {
+    height: 25px;
+
+    font-weight: bold;
+
+    font-size: 16px;
+
+    z-index: 20;
+}
+
+.wrong {
+    animation: shake .4s ease;
+}
+
+@keyframes shake {
+
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-9px);
+    }
+
+    50% {
+        transform: translateX(9px);
+    }
+
+    75% {
+        transform: translateX(-6px);
+    }
+}
+
+.member.found {
+    animation: found .5s ease;
+}
+
+@keyframes found {
+
+    50% {
+        transform: scale(1.12);
+    }
+}
+
+
+/* ==================================================
+   FLOWERS
+================================================== */
+
+#flowerScreen {
+    background: white;
+
+    z-index: 100;
+
+    display: none;
+}
+
+#flowerScreen.active {
+    display: block;
+}
+
+#flowers {
+    position: absolute;
+    inset: 0;
+}
+
+.flower {
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 230px;
+
+    transform:
+        translate(-50%, -50%)
+        scale(.05);
+
+    opacity: 0;
+
+    object-fit: contain;
+
+    animation:
+        flowerGrow 1.35s
+        cubic-bezier(.18,.72,.22,1)
+        forwards;
+}
+
+.flower:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.flower:nth-child(2) {
+    animation-delay: .04s;
+}
+
+.flower:nth-child(3) {
+    animation-delay: .08s;
+}
+
+.flower:nth-child(4) {
+    animation-delay: .12s;
+}
+
+.flower:nth-child(5) {
+    animation-delay: .16s;
+}
+
+.flower:nth-child(6) {
+    animation-delay: .20s;
+}
+
+.flower:nth-child(7) {
+    animation-delay: .24s;
+}
+
+.flower:nth-child(8) {
+    animation-delay: .28s;
+}
+
+.flower:nth-child(9) {
+    animation-delay: .32s;
+}
+
+@keyframes flowerGrow {
+
+    0% {
+        opacity: 0;
+
+        transform:
+            translate(-50%, -50%)
+            scale(.03);
+    }
+
+    20% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(.8);
+    }
+
+    55% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(3.5);
+    }
+
+    100% {
+        opacity: 1;
+
+        transform:
+            translate(-50%, -50%)
+            scale(9);
+    }
+}
+
+
+/* ==================================================
+   PIN
+================================================== */
+
+#pinScreen {
+    background:
+        radial-gradient(
+            circle at center,
+            #d82a43 0%,
+            #a50f25 58%,
+            #870a1d 100%
+        );
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 200;
+
+    color: white;
+}
+
+
+/* Full-screen stars */
+
+.pin-stars {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.95) 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.7) 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle,
+            rgba(255,230,230,.8) 1.2px,
+            transparent 1.7px
+        );
+
+    background-size:
+        38px 38px,
+        61px 61px,
+        87px 87px;
+
+    background-position:
+        3px 5px,
+        21px 30px,
+        47px 15px;
+
+    animation: twinkle 3s ease-in-out infinite alternate;
+
+    pointer-events: none;
+}
+
+@keyframes twinkle {
+
+    from {
+        opacity: .65;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.pin-content {
+    position: relative;
+
+    z-index: 10;
+
+    width: min(88vw, 350px);
+
+    text-align: center;
+}
+
+.sparkle {
+    font-size: 34px;
+
+    margin-bottom: 8px;
+}
+
+.pin-content h1 {
+    font-size: 29px;
+
+    margin-bottom: 10px;
+}
+
+.pin-content > p {
+    margin-bottom: 20px;
+}
+
+#pinInput {
+    display: block;
+
+    width: 100%;
+    height: 53px;
+
+    border: 2px solid white;
+
+    border-radius: 14px;
+
+    background: white;
+
+    color: #951023;
+
+    outline: none;
+
+    text-align: center;
+
+    font-size: 22px;
+
+    letter-spacing: 7px;
+
+    margin-bottom: 16px;
+}
+
+.pin-content .button {
+    display: block;
+
+    margin: 0 auto;
+}
+
+#pinFeedback {
+    height: 22px;
+
+    margin-top: 12px;
+
+    font-size: 14px;
+}
+
+
+/* ==================================================
+   STORY
+================================================== */
+
+.story-screen {
+    align-items: center;
+    justify-content: center;
+}
+
+.light-screen {
+    background: #fff6f6;
+
+    color: #5d2028;
+}
+
+
+/* Birthday */
+
+#birthdayScreen {
+    color: white;
+}
+
+.birthday-photo {
+    position: absolute;
+    inset: 0;
+
+    background-image:
+        url("picture/background.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+}
+
+.birthday-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(70,0,10,.25),
+            rgba(70,0,10,.48)
+        );
+}
+
+.birthday-content {
+    position: relative;
+
+    z-index: 5;
+
+    text-align: center;
+
+    padding: 20px;
+}
+
+.birthday-content > p {
+    font-size: 14px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+}
+
+.birthday-content h1 {
+    font-size: clamp(38px, 10vw, 64px);
+
+    line-height: 1.1;
+
+    text-shadow:
+        0 4px 20px rgba(0,0,0,.35);
+
+    margin-bottom: 30px;
+}
+
+
+/* Letter / Closing */
+
+.content-box {
+    width: min(90vw, 650px);
+
+    max-height: 88vh;
+
+    overflow-y: auto;
+
+    padding: 25px 5px;
+
+    scrollbar-width: none;
+}
+
+.content-box::-webkit-scrollbar {
+    display: none;
+}
+
+.label {
+    display: block;
+
+    color: #c02239;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 11px;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    margin-bottom: 10px;
+}
+
+.content-box h1 {
+    font-size: 35px;
+
+    line-height: 1.1;
+
+    margin-bottom: 24px;
+}
+
+.letter-text {
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: #63383d;
+}
+
+.letter-text p {
+    margin-bottom: 17px;
+}
+
+
+/* ==================================================
+   MEMORIES
+================================================== */
+
+#memoryScreen {
+    text-align: center;
+}
+
+.memory-content {
+    width: 100%;
+
+    padding: 20px;
+}
+
+.memory-content h1 {
+    font-size: 34px;
+
+    margin-bottom: 15px;
+}
+
+.polaroid {
+    width: min(86vw, 350px);
+
+    margin: 0 auto 17px;
+
+    padding: 12px 12px 0;
+
+    background: white;
+
+    box-shadow:
+        0 10px 28px rgba(80,0,10,.16);
+
+    transform: rotate(-1deg);
+}
+
+.polaroid img {
+    display: block;
+
+    width: 100%;
+
+    height: min(52vh, 370px);
+
+    object-fit: cover;
+}
+
+.caption {
+    min-height: 68px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+
+    font-family: "Comic Sans MS", cursive;
+
+    font-size: 16px;
+
+    color: #71353b;
+}
+
+.memory-navigation {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 20px;
+
+    margin-bottom: 17px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+}
+
+.memory-navigation button {
+    width: 37px;
+    height: 37px;
+
+    border-radius: 50%;
+
+    background: #a6152a;
+
+    color: white;
+
+    font-size: 18px;
+}
+
+
+/* ==================================================
+   FINAL
+================================================== */
+
+#finalScreen {
+    background:
+        radial-gradient(
+            circle at center,
+            #ffdfe3,
+            #fff5f5 65%
+        );
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: #651b24;
+}
+
+.final-content {
+    width: 90%;
+}
+
+.big-heart {
+    font-size: 65px;
+
+    color: #ad152c;
+
+    margin-bottom: 22px;
+}
+
+.final-content p {
+    font-size: clamp(21px, 5vw, 30px);
+
+    line-height: 1.6;
+
+    font-style: italic;
+}
+
+.final-content h2 {
+    color: #a31328;
+
+    font-size: 23px;
+
+    margin-top: 32px;
+}
+
+
+/* ==================================================
+   SMALL PHONE
+================================================== */
+
+@media (max-height: 700px) {
+
+    #gameScreen {
+        padding-top: 18px;
+    }
+
+    .game-board {
+        height: 450px;
+    }
+
+    .member {
+        height: 105px;
+    }
+
+    .member:nth-child(1),
+    .member:nth-child(2),
+    .member:nth-child(3) {
+        top: 5px;
+    }
+
+    .member:nth-child(4),
+    .member:nth-child(5) {
+        top: 115px;
+    }
+
+    .member:nth-child(6),
+    .member:nth-child(7) {
+        top: 225px;
+    }
+
+    .spiderman {
+        width: 100px;
+    }
+
+    .key {
+        top: 160px;
+    }
+
+    .birthday-content h1 {
+        font-size: 36px;
+    }
+}
