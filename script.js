@@ -1,130 +1,167 @@
-// ==========================================
+// ======================================================
+// HAPPY BIRTHDAY TETEH
+// SCRIPT.JS — dibuat khusus untuk HTML yang kamu kirim
+// ======================================================
+
+
+// ======================================================
 // SCREEN SYSTEM
-// ==========================================
+// ======================================================
 
 const screens = document.querySelectorAll(".screen");
 
-function showScreen(id) {
+function showScreen(screenId) {
     screens.forEach(screen => {
         screen.classList.remove("active");
     });
 
-    const target = document.getElementById(id);
+    const target = document.getElementById(screenId);
 
     if (target) {
         target.classList.add("active");
-        window.scrollTo({
-            top: 0,
-            behavior: "instant"
-        });
+
+        // Kembali ke posisi paling atas
+        window.scrollTo(0, 0);
     }
 }
 
 
-// ==========================================
+// ======================================================
 // MUSIC
-// ==========================================
+// ======================================================
 
-const music = document.getElementById("music");
+const bgMusic = document.getElementById("bgMusic");
 const musicBtn = document.getElementById("musicBtn");
 
-if (music && musicBtn) {
+if (bgMusic && musicBtn) {
 
-    music.volume = 0.5;
+    bgMusic.volume = 0.5;
 
-    musicBtn.addEventListener("click", async function (e) {
-        e.preventDefault();
-        e.stopPropagation();
+    musicBtn.addEventListener("click", function (event) {
 
-        try {
+        event.preventDefault();
+        event.stopPropagation();
 
-            if (music.paused) {
+        if (bgMusic.paused) {
 
-                await music.play();
+            bgMusic.play()
+                .then(function () {
 
-                musicBtn.textContent = "❚❚";
-                musicBtn.classList.add("playing");
+                    musicBtn.textContent = "❚❚";
+                    musicBtn.classList.add("playing");
 
-            } else {
+                })
+                .catch(function (error) {
 
-                music.pause();
+                    console.error("Musik gagal diputar:", error);
 
-                musicBtn.textContent = "♫";
-                musicBtn.classList.remove("playing");
-            }
+                    alert(
+                        "Musik belum bisa diputar. Pastikan file sunflower.mp3 ada di repository."
+                    );
 
-        } catch (error) {
+                });
 
-            console.error("Music error:", error);
+        } else {
 
-            alert(
-                "Musik belum bisa diputar. Pastikan file Sunflower.mp3 ada di repository."
-            );
+            bgMusic.pause();
+
+            musicBtn.textContent = "♫";
+            musicBtn.classList.remove("playing");
+
         }
+
     });
 
-    music.addEventListener("play", function () {
+
+    bgMusic.addEventListener("play", function () {
+
         musicBtn.textContent = "❚❚";
         musicBtn.classList.add("playing");
+
     });
 
-    music.addEventListener("pause", function () {
+
+    bgMusic.addEventListener("pause", function () {
+
         musicBtn.textContent = "♫";
         musicBtn.classList.remove("playing");
+
     });
+
+
+    bgMusic.addEventListener("error", function () {
+
+        console.error(
+            "File musik tidak ditemukan:",
+            bgMusic.currentSrc
+        );
+
+    });
+
 }
 
 
-// ==========================================
-// SPIDER-MAN GAME
-// ==========================================
+// ======================================================
+// GAME SPIDER-MAN
+// ======================================================
 
 const members = document.querySelectorAll(".member");
+
 const wrongMessage = document.getElementById("wrongMessage");
+
 const keyFound = document.getElementById("keyFound");
-const nextToFlowers = document.getElementById("nextToFlowers");
 
-members.forEach(member => {
+const nextFlowerBtn = document.getElementById("nextFlowerBtn");
 
-    member.addEventListener("click", function (e) {
 
-        e.preventDefault();
-        e.stopPropagation();
+members.forEach(function (member) {
+
+    member.addEventListener("click", function (event) {
+
+        event.preventDefault();
+        event.stopPropagation();
 
         const memberNumber = this.dataset.member;
 
-        // ==================================
-        // MEMBER NOMOR 7 = BENAR
-        // ==================================
+
+        // ==============================================
+        // MEMBER 7 = BENAR
+        // ==============================================
 
         if (memberNumber === "7") {
 
             if (keyFound) {
+
                 keyFound.classList.add("show");
+
             }
 
             return;
         }
 
 
-        // ==================================
-        // MEMBER LAIN = SALAH
-        // ==================================
+        // ==============================================
+        // MEMBER 1-6 = SALAH
+        // ==============================================
 
         this.classList.remove("wrong");
 
-        // Memaksa browser mengulang animasi
+        // Memastikan animasi bisa dimainkan lagi
         void this.offsetWidth;
 
         this.classList.add("wrong");
+
 
         if (wrongMessage) {
 
             wrongMessage.classList.add("show");
 
-            setTimeout(() => {
+            setTimeout(function () {
+
                 wrongMessage.classList.remove("show");
+
             }, 900);
+
         }
 
     });
@@ -132,20 +169,24 @@ members.forEach(member => {
 });
 
 
-// ==========================================
-// LANJUT KE BUNGA
-// ==========================================
+// ======================================================
+// TOMBOL LANJUT SETELAH MENEMUKAN KUNCI
+// ======================================================
 
-if (nextToFlowers) {
+if (nextFlowerBtn) {
 
-    nextToFlowers.addEventListener("click", function (e) {
+    nextFlowerBtn.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         if (keyFound) {
+
             keyFound.classList.remove("show");
+
         }
+
 
         startFlowerTransition();
 
@@ -154,104 +195,146 @@ if (nextToFlowers) {
 }
 
 
-// ==========================================
+// ======================================================
 // FLOWER TRANSITION
-// ==========================================
+// ======================================================
 
-const flowers = document.getElementById("flowers");
+const flowerContainer = document.getElementById("flowerContainer");
+
 
 function startFlowerTransition() {
 
-    if (!flowers) return;
+    if (!flowerContainer) {
+        return;
+    }
+
 
     showScreen("flowerScreen");
 
-    flowers.innerHTML = "";
+
+    flowerContainer.innerHTML = "";
+
 
     const flowerImages = [
+
         "flower 1.png",
         "flower 2.png",
         "flower 3.png"
+
     ];
 
+
+    // Jumlah bunga
     const totalFlowers = 100;
+
 
     for (let i = 0; i < totalFlowers; i++) {
 
         const flower = document.createElement("img");
 
+
         flower.className = "transition-flower";
 
-        flower.src = flowerImages[i % 3];
 
-        /*
-         * Posisi akhir bunga dibuat memenuhi seluruh layar.
-         * Awalnya akan muncul dari tengah.
-         */
+        flower.src = flowerImages[i % flowerImages.length];
 
+
+        // Posisi akhir bunga
         const x = Math.random() * 100;
         const y = Math.random() * 100;
 
-        flower.style.setProperty("--x", `${x}vw`);
-        flower.style.setProperty("--y", `${y}vh`);
 
-        flower.style.animationDelay = `${i * 0.01}s`;
+        flower.style.setProperty("--x", x + "vw");
+        flower.style.setProperty("--y", y + "vh");
 
-        flowers.appendChild(flower);
+
+        // Muncul bertahap
+        flower.style.animationDelay = (i * 0.01) + "s";
+
+
+        flowerContainer.appendChild(flower);
+
     }
 
 
-    // Setelah bunga memenuhi layar,
-    // pindah ke PIN.
+    // Setelah animasi bunga selesai,
+    // pindah ke PIN
 
-    setTimeout(() => {
+    setTimeout(function () {
+
+        flowerContainer.innerHTML = "";
 
         showScreen("pinScreen");
 
-        flowers.innerHTML = "";
-
-    }, 2600);
+    }, 2700);
 
 }
 
 
-// ==========================================
+// ======================================================
 // PIN
-// ==========================================
+// ======================================================
 
 const pinInput = document.getElementById("pinInput");
+
 const pinBtn = document.getElementById("pinBtn");
+
 const pinError = document.getElementById("pinError");
+
+
+const correctPin = "26092000";
+
 
 if (pinBtn) {
 
-    pinBtn.addEventListener("click", function (e) {
+    pinBtn.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         const enteredPin = pinInput
             ? pinInput.value.trim()
             : "";
 
-        if (enteredPin === "26092000") {
+
+        // ==============================================
+        // PIN BENAR
+        // ==============================================
+
+        if (enteredPin === correctPin) {
 
             if (pinError) {
+
                 pinError.textContent = "";
+
             }
+
 
             showScreen("birthdayScreen");
 
-        } else {
 
-            if (pinError) {
-                pinError.textContent = "PIN salah ♡";
-            }
+            return;
+        }
 
-            if (pinInput) {
-                pinInput.value = "";
-                pinInput.focus();
-            }
+
+        // ==============================================
+        // PIN SALAH
+        // ==============================================
+
+        if (pinError) {
+
+            pinError.textContent = "PIN-nya belum benar ♡";
+
+        }
+
+
+        if (pinInput) {
+
+            pinInput.value = "";
+
+            pinInput.focus();
+
         }
 
     });
@@ -259,19 +342,22 @@ if (pinBtn) {
 }
 
 
-// Bisa tekan Enter setelah memasukkan PIN
+// Bisa menekan ENTER setelah memasukkan PIN
 
 if (pinInput) {
 
-    pinInput.addEventListener("keydown", function (e) {
+    pinInput.addEventListener("keydown", function (event) {
 
-        if (e.key === "Enter") {
+        if (event.key === "Enter") {
 
-            e.preventDefault();
+            event.preventDefault();
 
             if (pinBtn) {
+
                 pinBtn.click();
+
             }
+
         }
 
     });
@@ -279,18 +365,20 @@ if (pinInput) {
 }
 
 
-// ==========================================
+// ======================================================
 // BIRTHDAY
-// ==========================================
+// ======================================================
 
 const birthdayNext = document.getElementById("birthdayNext");
 
+
 if (birthdayNext) {
 
-    birthdayNext.addEventListener("click", function (e) {
+    birthdayNext.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         showScreen("letterScreen");
 
@@ -299,22 +387,27 @@ if (birthdayNext) {
 }
 
 
-// ==========================================
+// ======================================================
 // LETTER
-// ==========================================
+// ======================================================
 
 const letterNext = document.getElementById("letterNext");
 
+
 if (letterNext) {
 
-    letterNext.addEventListener("click", function (e) {
+    letterNext.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         showScreen("memoryScreen");
 
+
+        // Mulai dari foto pertama
         currentPhoto = 0;
+
 
         updateMemory();
 
@@ -323,107 +416,143 @@ if (letterNext) {
 }
 
 
-// ==========================================
+// ======================================================
 // MEMORIES
-// ==========================================
+// ======================================================
 
 const memories = [
 
     {
         image: "foto 1.jpeg",
-        caption: "Some moments are small, but they become memories forever. ♡"
+        caption:
+            "Some moments are small, but they become memories forever. ♡"
     },
 
     {
         image: "foto 2.jpeg",
-        caption: "Growing up with you is one of my favorite things. ♡"
+        caption:
+            "Growing up with you is one of my favorite things. ♡"
     },
 
     {
         image: "foto 3.jpeg",
-        caption: "A little moment that I will always remember."
+        caption:
+            "A little moment that I will always remember."
     },
 
     {
         image: "foto 4.jpeg",
-        caption: "Thank you for all the laughs we have shared."
+        caption:
+            "Thank you for all the laughs we have shared."
     },
 
     {
         image: "foto 5.jpeg",
-        caption: "Life feels a little warmer with you around. ♡"
+        caption:
+            "Life feels a little warmer with you around. ♡"
     },
 
     {
         image: "foto 6.jpeg",
-        caption: "Another memory I want to keep forever."
+        caption:
+            "Another memory I want to keep forever."
     },
 
     {
         image: "foto 7.jpeg",
-        caption: "From little moments to memories that last forever."
+        caption:
+            "From little moments to memories that last forever."
     },
 
     {
         image: "foto 8.jpeg",
-        caption: "I'm really lucky to call you my sister. ♡"
+        caption:
+            "I'm really lucky to call you my sister. ♡"
     },
 
     {
         image: "foto 9.jpeg",
-        caption: "Here's to all the memories we already have."
+        caption:
+            "Here's to all the memories we already have."
     },
 
     {
         image: "foto 10.jpeg",
-        caption: "And here's to many more memories together. ♡"
+        caption:
+            "And here's to many more memories together. ♡"
     }
 
 ];
 
+
 let currentPhoto = 0;
 
-const memoryImage = document.getElementById("memoryImage");
+
+// Ambil elemen dari HTML
+const memoryPhoto = document.getElementById("memoryPhoto");
+
 const memoryCaption = document.getElementById("memoryCaption");
-const memoryCounter = document.getElementById("memoryCounter");
 
-const prevMemory = document.getElementById("prevMemory");
-const nextMemory = document.getElementById("nextMemory");
+const photoCounter = document.getElementById("photoCounter");
 
-const memoryNext = document.getElementById("memoryNext");
+const prevPhoto = document.getElementById("prevPhoto");
 
+const nextPhoto = document.getElementById("nextPhoto");
+
+const nextPhotoRight = document.getElementById("nextPhotoRight");
+
+
+// ======================================================
+// UPDATE FOTO
+// ======================================================
 
 function updateMemory() {
 
-    if (!memoryImage) return;
-
-    const memory = memories[currentPhoto];
-
-    // BENAR-BENAR mengganti file gambar
-    memoryImage.src = memory.image;
-
-    if (memoryCaption) {
-        memoryCaption.textContent = memory.caption;
+    if (!memoryPhoto) {
+        return;
     }
 
-    if (memoryCounter) {
-        memoryCounter.textContent =
-            `${currentPhoto + 1} / ${memories.length}`;
+
+    const currentMemory = memories[currentPhoto];
+
+
+    // GANTI FOTO
+    memoryPhoto.src = currentMemory.image;
+
+
+    // GANTI CAPTION
+    if (memoryCaption) {
+
+        memoryCaption.textContent =
+            currentMemory.caption;
+
+    }
+
+
+    // GANTI NOMOR FOTO
+    if (photoCounter) {
+
+        photoCounter.textContent =
+            (currentPhoto + 1) +
+            " / " +
+            memories.length;
+
     }
 
 }
 
 
-// ==========================================
+// ======================================================
 // FOTO SEBELUMNYA
-// ==========================================
+// ======================================================
 
-if (prevMemory) {
+if (prevPhoto) {
 
-    prevMemory.addEventListener("click", function (e) {
+    prevPhoto.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         if (currentPhoto > 0) {
 
@@ -438,22 +567,28 @@ if (prevMemory) {
 }
 
 
-// ==========================================
-// FOTO BERIKUTNYA
-// ==========================================
+// ======================================================
+// NEXT FOTO — TOMBOL TENGAH
+// ======================================================
 
-if (nextMemory) {
+if (nextPhoto) {
 
-    nextMemory.addEventListener("click", function (e) {
+    nextPhoto.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         if (currentPhoto < memories.length - 1) {
 
             currentPhoto++;
 
             updateMemory();
+
+        } else {
+
+            // Kalau sudah foto ke-10
+            showScreen("closingScreen");
 
         }
 
@@ -462,36 +597,50 @@ if (nextMemory) {
 }
 
 
-// ==========================================
-// NEXT DARI MEMORY
-// ==========================================
+// ======================================================
+// NEXT FOTO — TOMBOL KANAN
+// ======================================================
 
-if (memoryNext) {
+if (nextPhotoRight) {
 
-    memoryNext.addEventListener("click", function (e) {
+    nextPhotoRight.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
 
-        showScreen("closingScreen");
+
+        if (currentPhoto < memories.length - 1) {
+
+            currentPhoto++;
+
+            updateMemory();
+
+        } else {
+
+            // Kalau sudah foto ke-10
+            showScreen("closingScreen");
+
+        }
 
     });
 
 }
 
 
-// ==========================================
+// ======================================================
 // CLOSING
-// ==========================================
+// ======================================================
 
 const closingNext = document.getElementById("closingNext");
 
+
 if (closingNext) {
 
-    closingNext.addEventListener("click", function (e) {
+    closingNext.addEventListener("click", function (event) {
 
-        e.preventDefault();
-        e.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
+
 
         showScreen("finalScreen");
 
@@ -500,9 +649,9 @@ if (closingNext) {
 }
 
 
-// ==========================================
+// ======================================================
 // PRELOAD GAMBAR
-// ==========================================
+// ======================================================
 
 const imagesToPreload = [
 
@@ -515,6 +664,7 @@ const imagesToPreload = [
     "7.png",
 
     "spiderman.png",
+
     "kunci.png",
 
     "flower 1.png",
@@ -536,24 +686,29 @@ const imagesToPreload = [
 
 ];
 
-imagesToPreload.forEach(src => {
 
-    const img = new Image();
+imagesToPreload.forEach(function (imageSource) {
 
-    img.src = src;
+    const image = new Image();
+
+    image.src = imageSource;
 
 });
 
 
-// ==========================================
-// START
-// ==========================================
+// ======================================================
+// INITIAL STATE
+// ======================================================
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    // Mulai dari game
     showScreen("gameScreen");
 
+
+    // Mulai dari foto pertama
     currentPhoto = 0;
+
 
     updateMemory();
 
