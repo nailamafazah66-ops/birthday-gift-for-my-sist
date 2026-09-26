@@ -195,37 +195,49 @@ button {
 .members {
     position: absolute;
 
-    inset: 0;
+    top: 29%;
+    left: 5%;
+
+    width: 90%;
+    height: 42%;
 
     z-index: 20;
 
     pointer-events: none;
 }
 
+
+/* SEMUA MEMBER */
+
 .member {
     position: absolute;
 
-    background: transparent;
+    width: 21vw;
+    height: 21vw;
+
+    max-width: 105px;
+    max-height: 105px;
 
     padding: 0;
 
-    width: 25vw;
-    max-width: 125px;
+    background: transparent;
 
     pointer-events: auto;
 
     z-index: 25;
 
-    transition:
-        transform 0.2s ease,
-        filter 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .member img {
     display: block;
 
     width: 100%;
-    height: auto;
+    height: 100%;
+
+    object-fit: contain;
 
     pointer-events: none;
 
@@ -234,61 +246,89 @@ button {
 }
 
 
-/* POSITIONS */
+/* =====================================================
+   BARIS ATAS
+===================================================== */
+
+/*
+       1          2          3          4
+*/
+
 
 .member-1 {
-    left: 5%;
-    top: 27%;
+    left: 0%;
+    top: 0%;
 
     animation: float1 3s ease-in-out infinite;
 }
 
 .member-2 {
-    left: 28%;
-    top: 27%;
+    left: 25%;
+    top: 0%;
 
     animation: float2 3.4s ease-in-out infinite;
 }
 
 .member-3 {
-    right: 27%;
-    top: 27%;
+    left: 50%;
+    top: 0%;
 
     animation: float3 3.2s ease-in-out infinite;
 }
 
 .member-4 {
-    right: 5%;
-    top: 27%;
+    left: 75%;
+    top: 0%;
 
     animation: float4 3.5s ease-in-out infinite;
 }
 
-.member-5 {
-    left: 17%;
-    top: 48%;
 
-    animation: float2 3.1s ease-in-out infinite;
+/* =====================================================
+   BARIS BAWAH
+===================================================== */
+
+/*
+       5          6          7
+       ↑          ↑          ↑
+     bawah      tengah     bawah
+       1       2 & 3        4
+*/
+
+
+/* 5 tepat di bawah 1 */
+
+.member-5 {
+    left: 0%;
+    top: 58%;
+
+    animation: float5 3.1s ease-in-out infinite;
 }
+
+
+/* 6 tepat di tengah antara 2 dan 3 */
 
 .member-6 {
-    right: 17%;
-    top: 48%;
+    left: 50%;
+    top: 58%;
 
-    animation: float1 3.6s ease-in-out infinite;
+    animation: float6 3.6s ease-in-out infinite;
 }
+
+
+/* 7 tepat di bawah 4 */
 
 .member-7 {
-    left: 50%;
-    transform: translateX(-50%);
+    left: 75%;
+    top: 58%;
 
-    top: 48%;
-
-    animation: float3 3.3s ease-in-out infinite;
+    animation: float7 3.3s ease-in-out infinite;
 }
 
 
-/* FLOAT */
+/* =====================================================
+   FLOAT ATAS
+===================================================== */
 
 @keyframes float1 {
 
@@ -339,10 +379,68 @@ button {
 }
 
 
-/* WRONG */
+/* =====================================================
+   FLOAT BAWAH
+===================================================== */
+
+@keyframes float5 {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(1deg);
+    }
+
+    50% {
+        transform: translateY(-7px) rotate(-1deg);
+    }
+}
+
+
+/*
+   KHUSUS NOMOR 6.
+   Tidak memakai translateX karena
+   posisinya memang dimulai dari tengah.
+*/
+
+@keyframes float6 {
+
+    0%,
+    100% {
+        transform:
+            translateX(-50%)
+            translateY(0)
+            rotate(-1deg);
+    }
+
+    50% {
+        transform:
+            translateX(-50%)
+            translateY(-8px)
+            rotate(1deg);
+    }
+}
+
+
+@keyframes float7 {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-7px) rotate(1deg);
+    }
+}
+
+
+/* =====================================================
+   WRONG ANSWER
+===================================================== */
 
 .member.wrong {
     animation: wrongShake 0.45s ease !important;
+
     filter: brightness(0.7);
 }
 
@@ -381,7 +479,9 @@ button {
     left: 50%;
     top: 17%;
 
-    transform: translateX(-50%) scale(0.7);
+    transform:
+        translateX(-50%)
+        scale(0.7);
 
     opacity: 0;
 
@@ -444,6 +544,7 @@ button {
     pointer-events: none;
 
     user-select: none;
+    -webkit-user-drag: none;
 }
 
 
@@ -732,6 +833,7 @@ button {
 
 .birthday-screen {
     background-image: url("background.jpg");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1113,21 +1215,20 @@ button {
         top: 4%;
     }
 
-    .member {
-        width: 21vw;
+    .members {
+        top: 27%;
+        height: 43%;
     }
 
-    .member-1,
-    .member-2,
-    .member-3,
-    .member-4 {
-        top: 23%;
+    .member {
+        width: 19vw;
+        height: 19vw;
     }
 
     .member-5,
     .member-6,
     .member-7 {
-        top: 43%;
+        top: 58%;
     }
 
     .spiderman {
@@ -1137,7 +1238,6 @@ button {
     .polaroid {
         width: min(70vw, 310px);
     }
-
 }
 
 
@@ -1151,20 +1251,17 @@ button {
         font-size: 18px;
     }
 
+    .members {
+        left: 4%;
+        width: 92%;
+    }
+
     .member {
-        width: 22vw;
-    }
-
-    .member-1 {
-        left: 3%;
-    }
-
-    .member-4 {
-        right: 3%;
+        width: 20vw;
+        height: 20vw;
     }
 
     .polaroid {
         width: 72vw;
     }
-
 }
