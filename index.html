@@ -2,153 +2,157 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Teteh ♡</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday, Teteh ♡</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- MUSIC -->
-    <audio id="music" src="Sunflower.mp3" loop></audio>
-    <button id="musicButton" class="music-button">♫</button>
+    <!-- =========================
+         MUSIC
+    ========================== -->
+    <audio id="bgMusic" loop>
+        <source src="Sunflower.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="musicBtn" class="music-btn" aria-label="Music">
+        ♫
+    </button>
 
 
-    <!-- ==================================================
-         1. GAME
-    ================================================== -->
-
+    <!-- =========================
+         GAME
+    ========================== -->
     <section id="gameScreen" class="screen active">
 
-        <div class="game-header">
-            <h1>Bantu Spider-Man!</h1>
-            <p>Siapa yang membawa kunci?</p>
+        <div class="game-title">
+            <h1>Bantu Spider-Man mencari</h1>
+            <h1>siapa yang membawa kunci?</h1>
         </div>
 
-        <div class="game-board">
+        <div id="wrongMessage" class="wrong-message">
+            <span>✕</span>
+            <p>Bukan dia!</p>
+        </div>
 
-            <button class="member" data-number="1">
-                <img src="1.png">
+        <div class="members">
+
+            <button class="member member-1" data-member="1">
+                <img src="1.png" alt="Member 1">
             </button>
 
-            <button class="member" data-number="2">
-                <img src="2.png">
+            <button class="member member-2" data-member="2">
+                <img src="2.png" alt="Member 2">
             </button>
 
-            <button class="member" data-number="3">
-                <img src="3.png">
+            <button class="member member-3" data-member="3">
+                <img src="3.png" alt="Member 3">
             </button>
 
-            <button class="member" data-number="4">
-                <img src="4.png">
+            <button class="member member-4" data-member="4">
+                <img src="4.png" alt="Member 4">
             </button>
 
-            <button class="member" data-number="5">
-                <img src="5.png">
+            <button class="member member-5" data-member="5">
+                <img src="5.png" alt="Member 5">
             </button>
 
-            <button class="member" data-number="6">
-                <img src="6.png">
+            <button class="member member-6" data-member="6">
+                <img src="6.png" alt="Member 6">
             </button>
 
-            <button class="member" data-number="7">
-                <img src="7.png">
+            <button class="member member-7" data-member="7">
+                <img src="7.png" alt="Member 7">
             </button>
-
-            <img
-                class="spiderman"
-                src="spiderman.png"
-            >
-
-            <img
-                id="key"
-                class="key"
-                src="kunci.png"
-            >
 
         </div>
 
-        <div id="gameFeedback"></div>
+        <img
+            src="spiderman.png"
+            class="spiderman"
+            alt="Spider-Man"
+        >
 
-        <button id="gameNext" class="button hidden">
-            LANJUT ♡
-        </button>
+        <div id="keyFound" class="key-found">
+
+            <div class="key-box">
+                <img src="kunci.png" alt="Kunci">
+            </div>
+
+            <h2>Ketemu!</h2>
+
+            <button id="nextFlowerBtn" class="main-btn">
+                LANJUT
+            </button>
+
+        </div>
 
     </section>
 
 
-
-    <!-- ==================================================
-         2. FLOWER TRANSITION
-    ================================================== -->
-
+    <!-- =========================
+         FLOWER TRANSITION
+    ========================== -->
     <section id="flowerScreen" class="screen flower-screen">
 
-        <div id="flowers"></div>
+        <div id="flowerContainer"></div>
 
     </section>
 
 
-
-    <!-- ==================================================
-         3. PIN
-    ================================================== -->
-
+    <!-- =========================
+         PIN
+    ========================== -->
     <section id="pinScreen" class="screen pin-screen">
 
-        <div class="pin-stars"></div>
+        <div class="sparkles"></div>
 
         <div class="pin-content">
 
-            <div class="sparkle">✦</div>
+            <div class="pin-icon">🔐</div>
 
-            <h1>One Little Secret</h1>
+            <h1>One Little Secret...</h1>
 
-            <p>Masukkan PIN untuk lanjut ♡</p>
+            <p>Masukkan 8 angka rahasia</p>
 
             <input
                 id="pinInput"
-                type="password"
+                type="tel"
                 inputmode="numeric"
                 maxlength="8"
+                autocomplete="off"
                 placeholder="••••••••"
             >
 
-            <button id="pinButton" class="button">
-                CONTINUE ♡
-            </button>
+            <p id="pinError" class="pin-error">
+                PIN-nya belum benar ♡
+            </p>
 
-            <div id="pinFeedback"></div>
+            <button id="pinBtn" class="main-btn">
+                CONTINUE
+            </button>
 
         </div>
 
     </section>
 
 
-
-    <!-- ==================================================
-         4. BIRTHDAY
-    ================================================== -->
-
-    <section id="birthdayScreen" class="screen story-screen">
-
-        <div
-            class="birthday-photo"
-        ></div>
+    <!-- =========================
+         BIRTHDAY
+    ========================== -->
+    <section id="birthdayScreen" class="screen birthday-screen">
 
         <div class="birthday-overlay"></div>
 
         <div class="birthday-content">
 
-            <p>for someone very special ♡</p>
+            <h1>Happy Birthday,</h1>
+            <h1>My Teteh ♡</h1>
 
-            <h1>
-                Happy Birthday,<br>
-                My Teteh ♡
-            </h1>
-
-            <button class="button story-next">
-                NEXT →
+            <button id="birthdayNext" class="main-btn">
+                NEXT
             </button>
 
         </div>
@@ -156,62 +160,59 @@
     </section>
 
 
+    <!-- =========================
+         LETTER
+    ========================== -->
+    <section id="letterScreen" class="screen content-screen">
 
-    <!-- ==================================================
-         5. LETTER
-    ================================================== -->
+        <div class="letter-card">
 
-    <section id="letterScreen" class="screen story-screen light-screen">
+            <p class="small-title">A LITTLE LETTER</p>
 
-        <div class="content-box">
-
-            <span class="label">A LITTLE LETTER</span>
-
-            <h1>
-                A Little Letter<br>
-                for My Teteh
-            </h1>
+            <h1>A Little Letter for My Teteh</h1>
 
             <div class="letter-text">
 
-                <p>Dear Teteh,</p>
+                <p>To my dearest Teteh,</p>
 
                 <p>
-                    Hari ini aku cuma mau bilang sesuatu yang mungkin
-                    jarang aku ucapkan secara langsung.
+                    Happy birthday to one of the most important people in my life.
                 </p>
 
                 <p>
-                    Terima kasih karena sudah menjadi tetehku.
-                    Terima kasih untuk hal-hal kecil yang mungkin
-                    kelihatannya sederhana, tapi sebenarnya selalu
-                    aku ingat. Untuk perhatian Pean, untuk waktu yang
-                    Pean kasih, untuk segala hal yang pernah Pean
-                    lakukan buat aku, bahkan untuk hal-hal yang
-                    mungkin Pean sendiri sudah lupa.
+                    Thank you for all the little things you have done,
+                    for being there, and for all the memories we have made together.
                 </p>
 
                 <p>
-                    Kita memang nggak selalu sependapat. Kadang bisa
-                    saling ngeselin, kadang bisa berantem karena hal
-                    kecil. Tapi bagaimanapun juga, Pean tetap orang
-                    yang akan selalu punya tempat khusus dalam hidupku.
+                    We may not always say it out loud,
+                    but I am really grateful to have you as my sister.
                 </p>
 
                 <p>
-                    Aku mungkin nggak selalu pandai menunjukkan kalau
-                    aku sayang sama Pean. Tapi aku benar-benar
-                    bersyukur punya Pean sebagai tetehku.
+                    I hope this new chapter brings you lots of happiness,
+                    peace, good health, and beautiful moments.
                 </p>
 
                 <p>
-                    I hope you know how much you mean to me. 🤍
+                    No matter how much we grow up,
+                    you'll always be my Teteh. ♡
+                </p>
+
+                <p>
+                    Happy Birthday, Teteh.
+                    I love you. ♡
+                </p>
+
+                <p class="signature">
+                    With love,<br>
+                    Nula
                 </p>
 
             </div>
 
-            <button class="button story-next">
-                NEXT →
+            <button id="letterNext" class="main-btn">
+                NEXT
             </button>
 
         </div>
@@ -219,46 +220,60 @@
     </section>
 
 
+    <!-- =========================
+         MEMORIES
+    ========================== -->
+    <section id="memoryScreen" class="screen memory-screen">
 
-    <!-- ==================================================
-         6. MEMORIES
-    ================================================== -->
+        <div class="memory-header">
 
-    <section id="memoryScreen" class="screen story-screen light-screen">
+            <p>OUR LITTLE MEMORIES</p>
 
-        <div class="memory-content">
+            <h1>Memories with My Teteh ♡</h1>
 
-            <span class="label">OUR LITTLE MEMORIES</span>
+            <span id="photoCounter">1 / 10</span>
 
-            <h1>Some Moments ♡</h1>
+        </div>
 
-            <div class="polaroid">
 
-                <img
-                    id="memoryImage"
-                    src="foto 1.jpeg"
-                >
+        <div class="polaroid-area">
 
-                <div class="caption">
-                    <span id="memoryCaption">
-                        pretty, as always.
-                    </span>
+            <div id="polaroid" class="polaroid">
+
+                <div class="photo-holder">
+                    <img
+                        id="memoryPhoto"
+                        src="foto 1.jpeg"
+                        alt="Memory photo"
+                    >
+                </div>
+
+                <div class="caption-holder">
+
+                    <p id="memoryCaption">
+                        Some moments are small,
+                        but they become memories forever. ♡
+                    </p>
+
                 </div>
 
             </div>
 
-            <div class="memory-navigation">
+        </div>
 
-                <button id="previousPhoto">←</button>
 
-                <span id="photoNumber">1 / 10</span>
+        <div class="memory-controls">
 
-                <button id="nextPhoto">→</button>
+            <button id="prevPhoto" class="circle-btn">
+                ‹
+            </button>
 
-            </div>
+            <button id="nextPhoto" class="main-btn">
+                NEXT
+            </button>
 
-            <button class="button story-next">
-                NEXT →
+            <button id="nextPhotoRight" class="circle-btn">
+                ›
             </button>
 
         </div>
@@ -266,56 +281,37 @@
     </section>
 
 
+    <!-- =========================
+         CLOSING
+    ========================== -->
+    <section id="closingScreen" class="screen content-screen closing-screen">
 
-    <!-- ==================================================
-         7. CLOSING
-    ================================================== -->
+        <div class="closing-card">
 
-    <section id="closingScreen" class="screen story-screen light-screen">
+            <div class="heart">♡</div>
 
-        <div class="content-box">
+            <p class="small-title">
+                ONE MORE THING...
+            </p>
 
-            <span class="label">ONE MORE THING...</span>
+            <h1>For My Teteh</h1>
 
-            <h1>One More Thing...</h1>
+            <p>
+                Thank you for being part of so many chapters of my life.
+            </p>
 
-            <div class="letter-text">
+            <p>
+                Thank you for the laughs, the little moments,
+                the memories, and simply for being my sister.
+            </p>
 
-                <p>
-                    Teteh, kalau suatu hari nanti kita sama-sama sibuk
-                    dengan kehidupan masing-masing, aku harap kita tetap
-                    punya waktu untuk saling cerita dan saling mengingat
-                    satu sama lain.
-                </p>
+            <p>
+                I hope no matter where life takes us,
+                we'll always have each other.
+            </p>
 
-                <p>
-                    Aku mungkin akan tumbuh besar, Pean juga akan terus
-                    menjalani hidup Pean, tapi satu hal yang nggak akan
-                    berubah adalah Pean tetap tetehku.
-                </p>
-
-                <p>
-                    Aku berharap Pean selalu mendapatkan hal-hal baik
-                    yang Pean pantas dapatkan. Semoga langkah Pean
-                    selalu dimudahkan, semoga apa yang Pean perjuangkan
-                    perlahan terwujud, dan semoga Pean selalu punya
-                    alasan untuk tersenyum.
-                </p>
-
-                <p>
-                    Thank you for being my sister, my teteh,
-                    and one of the people I'll always be grateful
-                    to have in my life.
-                </p>
-
-                <p>
-                    Aku sayang Pean, Teteh. Happy Birthday. 🤍
-                </p>
-
-            </div>
-
-            <button class="button story-next">
-                NEXT →
+            <button id="closingNext" class="main-btn">
+                ONE LAST THING
             </button>
 
         </div>
@@ -323,30 +319,42 @@
     </section>
 
 
-
-    <!-- ==================================================
-         8. FINAL
-    ================================================== -->
-
+    <!-- =========================
+         FINAL
+    ========================== -->
     <section id="finalScreen" class="screen final-screen">
 
         <div class="final-content">
 
-            <div class="big-heart">♡</div>
+            <div class="final-heart">
+                ♡
+            </div>
 
             <p>
                 No matter where life takes us,
-                <br>
+            </p>
+
+            <p>
                 you'll always be my sister,
-                <br>
+            </p>
+
+            <p>
                 and I'll always be grateful that
-                <br>
+            </p>
+
+            <p>
                 I got to grow up with you.
             </p>
 
-            <h2>
+            <div class="final-line"></div>
+
+            <h1>
                 Happy Birthday, Teteh. ♡
-            </h2>
+            </h1>
+
+            <p class="from">
+                — Nula
+            </p>
 
         </div>
 
