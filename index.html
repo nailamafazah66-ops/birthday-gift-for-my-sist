@@ -4,364 +4,312 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Happy Birthday, Teteh ♡</title>
-
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <!-- =========================
-         MUSIC
-    ========================== -->
-    <audio id="bgMusic" loop>
+<audio id="bgMusic" loop preload="auto">
     <source src="sunflower.mp3" type="audio/mpeg">
-    </audio>
+</audio>
 
-    <button id="musicBtn" class="music-btn" aria-label="Music">
-        ♫
-    </button>
+<button id="musicBtn" class="music-btn">♫</button>
 
 
-    <!-- =========================
-         GAME
-    ========================== -->
-    <section id="gameScreen" class="screen active">
+<!-- GAME -->
+<section id="gameScreen" class="screen active">
 
-        <div class="game-title">
-            <h1>Bantu Spider-Man mencari</h1>
-            <h1>siapa yang membawa kunci?</h1>
+    <div class="game-title">
+        <h1>Bantu Spider-Man mencari</h1>
+        <h1>siapa yang membawa kunci?</h1>
+    </div>
+
+    <div id="wrongMessage" class="wrong-message">
+        <span>✕</span>
+        <p>Bukan dia!</p>
+    </div>
+
+    <div class="members">
+
+        <button class="member member-1" data-member="1">
+            <img src="1.png" alt="">
+        </button>
+
+        <button class="member member-2" data-member="2">
+            <img src="2.png" alt="">
+        </button>
+
+        <button class="member member-3" data-member="3">
+            <img src="3.png" alt="">
+        </button>
+
+        <button class="member member-4" data-member="4">
+            <img src="4.png" alt="">
+        </button>
+
+        <button class="member member-5" data-member="5">
+            <img src="5.png" alt="">
+        </button>
+
+        <button class="member member-6" data-member="6">
+            <img src="6.png" alt="">
+        </button>
+
+        <button class="member member-7" data-member="7">
+            <img src="7.png" alt="">
+        </button>
+
+    </div>
+
+    <img src="spiderman.png" class="spiderman" alt="Spider-Man">
+
+    <div id="keyFound" class="key-found">
+
+        <div class="key-box">
+            <img src="kunci.png" alt="Kunci">
         </div>
 
-        <div id="wrongMessage" class="wrong-message">
-            <span>✕</span>
-            <p>Bukan dia!</p>
-        </div>
+        <h2>Ketemu!</h2>
 
-        <div class="members">
+        <button id="nextFlowerBtn" class="main-btn">
+            LANJUT
+        </button>
 
-            <button class="member member-1" data-member="1">
-                <img src="1.png" alt="Member 1">
-            </button>
+    </div>
 
-            <button class="member member-2" data-member="2">
-                <img src="2.png" alt="Member 2">
-            </button>
+</section>
 
-            <button class="member member-3" data-member="3">
-                <img src="3.png" alt="Member 3">
-            </button>
 
-            <button class="member member-4" data-member="4">
-                <img src="4.png" alt="Member 4">
-            </button>
+<!-- FLOWERS -->
+<section id="flowerScreen" class="screen flower-screen">
+    <div id="flowerContainer"></div>
+</section>
 
-            <button class="member member-5" data-member="5">
-                <img src="5.png" alt="Member 5">
-            </button>
 
-            <button class="member member-6" data-member="6">
-                <img src="6.png" alt="Member 6">
-            </button>
+<!-- PIN -->
+<section id="pinScreen" class="screen pin-screen">
 
-            <button class="member member-7" data-member="7">
-                <img src="7.png" alt="Member 7">
-            </button>
+    <div class="sparkles"></div>
 
-        </div>
+    <div class="pin-content">
 
-        <img
-            src="spiderman.png"
-            class="spiderman"
-            alt="Spider-Man"
+        <div class="pin-icon">🔐</div>
+
+        <h1>One Little Secret...</h1>
+
+        <p>Masukkan 8 angka rahasia</p>
+
+        <input
+            id="pinInput"
+            type="tel"
+            inputmode="numeric"
+            maxlength="8"
+            placeholder="••••••••"
         >
 
-        <div id="keyFound" class="key-found">
+        <p id="pinError" class="pin-error">
+            PIN-nya belum benar ♡
+        </p>
 
-            <div class="key-box">
-                <img src="kunci.png" alt="Kunci">
-            </div>
+        <button id="pinBtn" class="main-btn">
+            CONTINUE
+        </button>
 
-            <h2>Ketemu!</h2>
+    </div>
 
-            <button id="nextFlowerBtn" class="main-btn">
-                LANJUT
-            </button>
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =========================
-         FLOWER TRANSITION
-    ========================== -->
-    <section id="flowerScreen" class="screen flower-screen">
+<!-- BIRTHDAY -->
+<section id="birthdayScreen" class="screen birthday-screen">
 
-        <div id="flowerContainer"></div>
+    <div class="birthday-overlay"></div>
 
-    </section>
+    <div class="birthday-content">
+
+        <h1>Happy Birthday,</h1>
+        <h1>My Teteh ♡</h1>
+
+        <button id="birthdayNext" class="main-btn">
+            NEXT
+        </button>
+
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         PIN
-    ========================== -->
-    <section id="pinScreen" class="screen pin-screen">
+<!-- LETTER -->
+<section id="letterScreen" class="screen content-screen">
 
-        <div class="sparkles"></div>
+    <div class="letter-card">
 
-        <div class="pin-content">
+        <p class="small-title">A LITTLE LETTER</p>
 
-            <div class="pin-icon">🔐</div>
+        <h1>A Little Letter for My Teteh</h1>
 
-            <h1>One Little Secret...</h1>
+        <div class="letter-text">
 
-            <p>Masukkan 8 angka rahasia</p>
+            <p>To my dearest Teteh,</p>
 
-            <input
-                id="pinInput"
-                type="tel"
-                inputmode="numeric"
-                maxlength="8"
-                autocomplete="off"
-                placeholder="••••••••"
-            >
-
-            <p id="pinError" class="pin-error">
-                PIN-nya belum benar ♡
+            <p>
+                Happy birthday to one of the most important people in my life.
             </p>
 
-            <button id="pinBtn" class="main-btn">
-                CONTINUE
-            </button>
+            <p>
+                Thank you for all the little things you have done,
+                for being there, and for all the memories we have made together.
+            </p>
+
+            <p>
+                We may not always say it out loud,
+                but I am really grateful to have you as my sister.
+            </p>
+
+            <p>
+                I hope this new chapter brings you lots of happiness,
+                peace, good health, and beautiful moments.
+            </p>
+
+            <p>
+                No matter how much we grow up,
+                you'll always be my Teteh. ♡
+            </p>
+
+            <p>
+                Happy Birthday, Teteh.
+                I love you. ♡
+            </p>
+
+            <p class="signature">
+                With love,<br>
+                Nula
+            </p>
 
         </div>
 
-    </section>
+        <button id="letterNext" class="main-btn">
+            NEXT
+        </button>
+
+    </div>
+
+</section>
 
 
-    <!-- =========================
-         BIRTHDAY
-    ========================== -->
-    <section id="birthdayScreen" class="screen birthday-screen">
+<!-- MEMORIES -->
+<section id="memoryScreen" class="screen memory-screen">
 
-        <div class="birthday-overlay"></div>
+    <div class="memory-header">
 
-        <div class="birthday-content">
+        <p>OUR LITTLE MEMORIES</p>
 
-            <h1>Happy Birthday,</h1>
-            <h1>My Teteh ♡</h1>
+        <h1>Memories with My Teteh ♡</h1>
 
-            <button id="birthdayNext" class="main-btn">
-                NEXT
-            </button>
+        <span id="photoCounter">1 / 10</span>
 
-        </div>
+    </div>
 
-    </section>
+    <div class="polaroid-area">
 
+        <div id="polaroid" class="polaroid">
 
-    <!-- =========================
-         LETTER
-    ========================== -->
-    <section id="letterScreen" class="screen content-screen">
-
-        <div class="letter-card">
-
-            <p class="small-title">A LITTLE LETTER</p>
-
-            <h1>A Little Letter for My Teteh</h1>
-
-            <div class="letter-text">
-
-                <p>To my dearest Teteh,</p>
-
-                <p>
-                    Happy birthday to one of the most important people in my life.
-                </p>
-
-                <p>
-                    Thank you for all the little things you have done,
-                    for being there, and for all the memories we have made together.
-                </p>
-
-                <p>
-                    We may not always say it out loud,
-                    but I am really grateful to have you as my sister.
-                </p>
-
-                <p>
-                    I hope this new chapter brings you lots of happiness,
-                    peace, good health, and beautiful moments.
-                </p>
-
-                <p>
-                    No matter how much we grow up,
-                    you'll always be my Teteh. ♡
-                </p>
-
-                <p>
-                    Happy Birthday, Teteh.
-                    I love you. ♡
-                </p>
-
-                <p class="signature">
-                    With love,<br>
-                    Nula
-                </p>
-
+            <div class="photo-holder">
+                <img
+                    id="memoryPhoto"
+                    src="foto 1.jpeg"
+                    alt="Memory"
+                >
             </div>
 
-            <button id="letterNext" class="main-btn">
-                NEXT
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- =========================
-         MEMORIES
-    ========================== -->
-    <section id="memoryScreen" class="screen memory-screen">
-
-        <div class="memory-header">
-
-            <p>OUR LITTLE MEMORIES</p>
-
-            <h1>Memories with My Teteh ♡</h1>
-
-            <span id="photoCounter">1 / 10</span>
-
-        </div>
-
-
-        <div class="polaroid-area">
-
-            <div id="polaroid" class="polaroid">
-
-                <div class="photo-holder">
-                    <img
-                        id="memoryPhoto"
-                        src="foto 1.jpeg"
-                        alt="Memory photo"
-                    >
-                </div>
-
-                <div class="caption-holder">
-
-                    <p id="memoryCaption">
-                        Some moments are small,
-                        but they become memories forever. ♡
-                    </p>
-
-                </div>
-
+            <div class="caption-holder">
+                <p id="memoryCaption">
+                    Some moments are small,
+                    but they become memories forever. ♡
+                </p>
             </div>
 
         </div>
 
+    </div>
 
-        <div class="memory-controls">
+    <div class="memory-controls">
 
-            <button id="prevPhoto" class="circle-btn">
-                ‹
-            </button>
+        <button id="prevPhoto" class="circle-btn">
+            ‹
+        </button>
 
-            <button id="nextPhoto" class="main-btn">
-                NEXT
-            </button>
+        <button id="nextPhoto" class="main-btn">
+            NEXT
+        </button>
 
-            <button id="nextPhotoRight" class="circle-btn">
-                ›
-            </button>
+        <button id="nextPhotoRight" class="circle-btn">
+            ›
+        </button>
 
-        </div>
+    </div>
 
-    </section>
-
-
-    <!-- =========================
-         CLOSING
-    ========================== -->
-    <section id="closingScreen" class="screen content-screen closing-screen">
-
-        <div class="closing-card">
-
-            <div class="heart">♡</div>
-
-            <p class="small-title">
-                ONE MORE THING...
-            </p>
-
-            <h1>For My Teteh</h1>
-
-            <p>
-                Thank you for being part of so many chapters of my life.
-            </p>
-
-            <p>
-                Thank you for the laughs, the little moments,
-                the memories, and simply for being my sister.
-            </p>
-
-            <p>
-                I hope no matter where life takes us,
-                we'll always have each other.
-            </p>
-
-            <button id="closingNext" class="main-btn">
-                ONE LAST THING
-            </button>
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- =========================
-         FINAL
-    ========================== -->
-    <section id="finalScreen" class="screen final-screen">
+<!-- CLOSING -->
+<section id="closingScreen" class="screen content-screen">
 
-        <div class="final-content">
+    <div class="closing-card">
 
-            <div class="final-heart">
-                ♡
-            </div>
+        <div class="heart">♡</div>
 
-            <p>
-                No matter where life takes us,
-            </p>
+        <p class="small-title">ONE MORE THING...</p>
 
-            <p>
-                you'll always be my sister,
-            </p>
+        <h1>For My Teteh</h1>
 
-            <p>
-                and I'll always be grateful that
-            </p>
+        <p>
+            Thank you for being part of so many chapters of my life.
+        </p>
 
-            <p>
-                I got to grow up with you.
-            </p>
+        <p>
+            Thank you for the laughs, the little moments,
+            the memories, and simply for being my sister.
+        </p>
 
-            <div class="final-line"></div>
+        <p>
+            I hope no matter where life takes us,
+            we'll always have each other.
+        </p>
 
-            <h1>
-                Happy Birthday, Teteh. ♡
-            </h1>
+        <button id="closingNext" class="main-btn">
+            ONE LAST THING
+        </button>
 
-            <p class="from">
-                — Nula
-            </p>
+    </div>
 
-        </div>
-
-    </section>
+</section>
 
 
-    <script src="script.js"></script>
+<!-- FINAL -->
+<section id="finalScreen" class="screen final-screen">
+
+    <div class="final-content">
+
+        <div class="final-heart">♡</div>
+
+        <p>No matter where life takes us,</p>
+        <p>you'll always be my sister,</p>
+        <p>and I'll always be grateful that</p>
+        <p>I got to grow up with you.</p>
+
+        <div class="final-line"></div>
+
+        <h1>Happy Birthday, Teteh. ♡</h1>
+
+        <p class="from">— Nula</p>
+
+    </div>
+
+</section>
+
+
+<script src="script.js"></script>
 
 </body>
 </html>
