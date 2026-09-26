@@ -1,511 +1,514 @@
-/* =================================
-   SCREEN
-================================= */
+/* ==========================================
+   ELEMENTS
+========================================== */
 
 const screens = {
-
-  game:
-    document.getElementById("gameScreen"),
-
-  flowers:
-    document.getElementById("flowerScreen"),
-
-  pin:
-    document.getElementById("pinScreen"),
-
-  birthday:
-    document.getElementById("birthdayScreen"),
-
-  letter:
-    document.getElementById("letterScreen"),
-
-  memory:
-    document.getElementById("memoryScreen"),
-
-  closing:
-    document.getElementById("closingScreen"),
-
-  final:
-    document.getElementById("finalScreen")
-
+    game: document.getElementById("gameScreen"),
+    flower: document.getElementById("flowerScreen"),
+    pin: document.getElementById("pinScreen"),
+    birthday: document.getElementById("birthdayScreen"),
+    letter: document.getElementById("letterScreen"),
+    memory: document.getElementById("memoryScreen"),
+    closing: document.getElementById("closingScreen"),
+    final: document.getElementById("finalScreen")
 };
 
 
+/* ==========================================
+   SCREEN SWITCHER
+========================================== */
+
 function showScreen(screen) {
 
-  Object.values(screens).forEach(
-    item => item.classList.remove("active")
-  );
+    Object.values(screens).forEach(item => {
+        item.classList.remove("active");
+    });
 
-  screen.classList.add("active");
+    screen.classList.add("active");
 
+    window.scrollTo(0, 0);
 }
 
 
-/* =================================
+/* ==========================================
    MUSIC
-================================= */
+========================================== */
 
-const music =
-  document.getElementById("music");
-
-const musicBtn =
-  document.getElementById("musicBtn");
+const music = document.getElementById("bgMusic");
+const musicBtn = document.getElementById("musicBtn");
 
 let musicPlaying = false;
 
-music.volume = 0.55;
+music.volume = 0.45;
 
 
-musicBtn.addEventListener(
-  "click",
-  async () => {
+/*
+    Music TIDAK autoplay.
+    Baru menyala setelah tombol ditekan.
+*/
+
+musicBtn.addEventListener("click", async () => {
 
     try {
 
-      if (musicPlaying) {
+        if (musicPlaying) {
 
-        music.pause();
+            music.pause();
 
-        musicPlaying = false;
+            musicPlaying = false;
 
-      } else {
+            musicBtn.classList.remove("playing");
 
-        await music.play();
+            musicBtn.textContent = "♫";
 
-        musicPlaying = true;
+        } else {
 
-      }
+            await music.play();
+
+            musicPlaying = true;
+
+            musicBtn.classList.add("playing");
+
+            musicBtn.textContent = "❚❚";
+        }
 
     } catch (error) {
 
-      console.log(
-        "Music error:",
-        error
-      );
+        console.log("Music tidak dapat dimainkan:", error);
 
     }
-
-  }
-);
-
-
-/* =================================
-   GAME
-================================= */
-
-const members =
-  document.querySelectorAll(".member");
-
-const wrongMessage =
-  document.getElementById(
-    "wrongMessage"
-  );
-
-const keyFound =
-  document.getElementById(
-    "keyFound"
-  );
-
-
-members.forEach(member => {
-
-  member.addEventListener(
-    "click",
-    () => {
-
-      const number =
-        member.dataset.member;
-
-
-      /* =========================
-         CORRECT = MEMBER 7
-      ========================== */
-
-      if (number === "7") {
-
-        members.forEach(
-          m => m.disabled = true
-        );
-
-        member.classList.add(
-          "found"
-        );
-
-        keyFound.classList.add(
-          "show"
-        );
-
-        return;
-
-      }
-
-
-      /* =========================
-         WRONG
-      ========================== */
-
-      member.classList.remove(
-        "wrong"
-      );
-
-      void member.offsetWidth;
-
-      member.classList.add(
-        "wrong"
-      );
-
-
-      wrongMessage.classList.remove(
-        "show"
-      );
-
-      void wrongMessage.offsetWidth;
-
-      wrongMessage.classList.add(
-        "show"
-      );
-
-    }
-
-  );
 
 });
 
 
-/* =================================
+/* ==========================================
+   GAME
+========================================== */
+
+const members = document.querySelectorAll(".member");
+
+const wrongMessage =
+    document.getElementById("wrongMessage");
+
+const keyFound =
+    document.getElementById("keyFound");
+
+
+let gameFinished = false;
+
+
+members.forEach(member => {
+
+    member.addEventListener("click", () => {
+
+        if (gameFinished) {
+            return;
+        }
+
+        const number =
+            member.dataset.member;
+
+
+        /* =========================
+           BENAR: NOMOR 7
+        ========================== */
+
+        if (number === "7") {
+
+            gameFinished = true;
+
+            keyFound.classList.add("show");
+
+            return;
+        }
+
+
+        /* =========================
+           SALAH
+        ========================== */
+
+        member.classList.remove("shake");
+
+        void member.offsetWidth;
+
+        member.classList.add("shake");
+
+        wrongMessage.classList.remove("show");
+
+        void wrongMessage.offsetWidth;
+
+        wrongMessage.classList.add("show");
+
+
+        setTimeout(() => {
+
+            member.classList.remove("shake");
+
+        }, 500);
+
+    });
+
+});
+
+
+/* ==========================================
    FLOWER TRANSITION
-================================= */
+========================================== */
+
+const nextFlowerBtn =
+    document.getElementById("nextFlowerBtn");
 
 const flowerContainer =
-  document.getElementById(
-    "flowerContainer"
-  );
+    document.getElementById("flowerContainer");
 
 
 const flowerImages = [
-
-  "flower 1.png",
-  "flower 2.png",
-  "flower 3.png"
-
+    "flower 1.png",
+    "flower 2.png",
+    "flower 3.png"
 ];
 
 
 function createFlowers() {
 
-  flowerContainer.innerHTML = "";
-
-
-  /*
-    BANYAK BANGET BUNGA.
-    Dibuat dalam beberapa lingkaran
-    supaya tetap terlihat teratur.
-  */
-
-  const totalFlowers = 75;
-
-
-  for (
-    let i = 0;
-    i < totalFlowers;
-    i++
-  ) {
-
-    const flower =
-      document.createElement("img");
-
-
-    flower.className =
-      "flower";
-
-
-    flower.src =
-      flowerImages[
-        i % flowerImages.length
-      ];
+    flowerContainer.innerHTML = "";
 
 
     /*
-      Susunan radial.
-      Jadi bukan bunga random
-      yang dilempar ke mana-mana.
+        Bukan random berantakan.
+
+        Bunga dibuat dalam pola grid besar
+        yang titik awalnya semuanya dari tengah,
+        kemudian mekar menuju seluruh layar.
+
+        Jumlah:
+        10 kolom x 10 baris = 100 bunga.
     */
 
-    const angle =
-      (i / totalFlowers)
-      * Math.PI
-      * 2;
+    const columns = 10;
+    const rows = 10;
+
+    let index = 0;
 
 
-    const ring =
-      Math.floor(i / 15);
+    for (let row = 0; row < rows; row++) {
+
+        for (let col = 0; col < columns; col++) {
+
+            const flower =
+                document.createElement("div");
+
+            flower.className = "flower";
 
 
-    const distance =
-      90 + ring * 115;
+            /*
+                Target posisi melebar sampai
+                melewati tepi layar.
+
+                Ini membuat layar benar-benar
+                tertutup bunga tanpa lubang besar.
+            */
+
+            const x =
+                -55 +
+                (col / (columns - 1)) * 110;
+
+            const y =
+                -70 +
+                (row / (rows - 1)) * 140;
 
 
-    const x =
-      Math.cos(angle)
-      * distance;
+            /*
+                Sedikit variasi agar tidak terlihat
+                seperti tabel kaku, tetapi tetap rapi.
+            */
+
+            const tinyX =
+                Math.sin(index * 1.7) * 3;
+
+            const tinyY =
+                Math.cos(index * 1.3) * 3;
 
 
-    const y =
-      Math.sin(angle)
-      * distance;
+            const scale =
+                1.05 +
+                ((index * 7) % 5) * 0.12;
 
 
-    const scale =
-      0.9 +
-      ((i * 13) % 60)
-      / 100;
+            const rotation =
+                -15 +
+                ((index * 23) % 30);
 
 
-    const rotation =
-      ((i * 29) % 50) - 25;
+            /*
+                Bunga berganti:
+                flower 1
+                flower 2
+                flower 3
+                lalu ulang.
+            */
+
+            const image =
+                flowerImages[index % flowerImages.length];
 
 
-    flower.style.setProperty(
-      "--x",
-      `${x}px`
-    );
+            flower.innerHTML = `
+                <img src="${image}" alt="">
+            `;
 
 
-    flower.style.setProperty(
-      "--y",
-      `${y}px`
-    );
+            flower.style.setProperty(
+                "--x",
+                `${x + tinyX}vw`
+            );
 
+            flower.style.setProperty(
+                "--y",
+                `${y + tinyY}vh`
+            );
 
-    flower.style.setProperty(
-      "--scale",
-      scale.toFixed(2)
-    );
+            flower.style.setProperty(
+                "--scale",
+                scale
+            );
 
-
-    flower.style.setProperty(
-      "--rotate",
-      `${rotation}deg`
-    );
-
-
-    /*
-      Sedikit delay supaya
-      bunga muncul bertahap,
-      tapi tetap cepat.
-    */
-
-    flower.style.animationDelay =
-      `${i * 0.012}s`;
-
-
-    flowerContainer.appendChild(
-      flower
-    );
-
-  }
-
-}
-
-
-document
-  .getElementById("nextToFlowers")
-  .addEventListener(
-    "click",
-    () => {
-
-      createFlowers();
-
-      showScreen(
-        screens.flowers
-      );
-
-
-      /*
-        Tunggu bunga memenuhi
-        seluruh layar.
-      */
-
-      setTimeout(
-        () => {
-
-          screens.flowers
-            .classList.add(
-              "leaving"
+            flower.style.setProperty(
+                "--rotation",
+                `${rotation}deg`
             );
 
 
-          setTimeout(
-            () => {
+            /*
+                Bunga muncul cepat,
+                tetapi tetap terasa seperti
+                gelombang yang menyebar.
+            */
 
-              screens.flowers
-                .classList.remove(
-                  "leaving"
-                );
+            const delay =
+                (index % 10) * 0.025 +
+                Math.floor(index / 10) * 0.018;
 
-              showScreen(
-                screens.pin
-              );
 
-            },
-            500
-          );
+            flower.style.setProperty(
+                "--delay",
+                `${delay}s`
+            );
 
-        },
-        1900
-      );
 
+            flowerContainer.appendChild(flower);
+
+            index++;
+        }
     }
-  );
+}
 
 
-/* =================================
+nextFlowerBtn.addEventListener("click", () => {
+
+    showScreen(screens.flower);
+
+    createFlowers();
+
+
+    /*
+        Tunggu bunga benar-benar memenuhi layar,
+        baru masuk PIN.
+    */
+
+    setTimeout(() => {
+
+        showScreen(screens.pin);
+
+    }, 1900);
+
+});
+
+
+/* ==========================================
    PIN
-================================= */
+========================================== */
 
 const pinInput =
-  document.getElementById(
-    "pinInput"
-  );
+    document.getElementById("pinInput");
+
+const pinBtn =
+    document.getElementById("pinBtn");
 
 const pinError =
-  document.getElementById(
-    "pinError"
-  );
+    document.getElementById("pinError");
 
 
-function checkPin() {
-
-  const pin =
-    pinInput.value;
+const correctPIN = "26092000";
 
 
-  if (pin === "26092000") {
+function checkPIN() {
 
-    pinError.textContent = "";
+    const value =
+        pinInput.value.trim();
 
-    pinInput.blur();
 
-    showScreen(
-      screens.birthday
-    );
+    if (value === correctPIN) {
 
-  } else {
+        pinError.classList.remove("show");
 
-    pinError.textContent =
-      "PIN-nya belum benar ♡";
+        pinInput.blur();
+
+        showScreen(screens.birthday);
+
+        return;
+    }
+
+
+    pinError.classList.add("show");
 
     pinInput.value = "";
 
     pinInput.focus();
 
-  }
-
 }
 
 
-document
-  .getElementById("pinButton")
-  .addEventListener(
-    "click",
-    checkPin
-  );
+pinBtn.addEventListener("click", checkPIN);
 
 
-pinInput.addEventListener(
-  "keydown",
-  event => {
+pinInput.addEventListener("keydown", event => {
 
-    if (
-      event.key === "Enter"
-    ) {
+    if (event.key === "Enter") {
 
-      checkPin();
+        checkPIN();
 
     }
 
-  }
-);
+});
 
 
-/* =================================
+/*
+    Hanya boleh angka.
+*/
+
+pinInput.addEventListener("input", () => {
+
+    pinInput.value =
+        pinInput.value
+            .replace(/\D/g, "")
+            .slice(0, 8);
+
+});
+
+
+/* ==========================================
    BIRTHDAY → LETTER
-================================= */
+========================================== */
 
 document
-  .getElementById("birthdayNext")
-  .addEventListener(
-    "click",
-    () => {
+    .getElementById("birthdayNext")
+    .addEventListener("click", () => {
 
-      showScreen(
-        screens.letter
-      );
+        showScreen(screens.letter);
 
-    }
-  );
+    });
 
 
-/* =================================
+/* ==========================================
    LETTER → MEMORY
-================================= */
+========================================== */
 
 document
-  .getElementById("letterNext")
-  .addEventListener(
-    "click",
-    () => {
+    .getElementById("letterNext")
+    .addEventListener("click", () => {
 
-      showScreen(
-        screens.memory
-      );
+        showScreen(screens.memory);
 
+    });
+
+
+/* ==========================================
+   MEMORY
+========================================== */
+
+const memoryPhoto =
+    document.getElementById("memoryPhoto");
+
+const memoryCaption =
+    document.getElementById("memoryCaption");
+
+const photoCounter =
+    document.getElementById("photoCounter");
+
+const polaroid =
+    document.getElementById("polaroid");
+
+
+/*
+    PENTING:
+
+    Setiap foto benar-benar memakai
+    file yang berbeda.
+
+    Tidak ada foto yang diulang.
+*/
+
+const memories = [
+
+    {
+        image: "foto 1.jpeg",
+        caption:
+            "Some moments are small, but they become memories forever. ♡"
+    },
+
+    {
+        image: "foto 2.jpeg",
+        caption:
+            "Growing up with you is one of my favorite things. ♡"
+    },
+
+    {
+        image: "foto 3.jpeg",
+        caption:
+            "A little moment that I will always remember."
+    },
+
+    {
+        image: "foto 4.jpeg",
+        caption:
+            "Thank you for all the laughs we have shared."
+    },
+
+    {
+        image: "foto 5.jpeg",
+        caption:
+            "Life feels a little warmer with you around. ♡"
+    },
+
+    {
+        image: "foto 6.jpeg",
+        caption:
+            "Another memory I want to keep forever."
+    },
+
+    {
+        image: "foto 7.jpeg",
+        caption:
+            "From little moments to memories that last forever."
+    },
+
+    {
+        image: "foto 8.jpeg",
+        caption:
+            "I'm really lucky to call you my sister. ♡"
+    },
+
+    {
+        image: "foto 9.jpeg",
+        caption:
+            "Here's to all the memories we already have."
+    },
+
+    {
+        image: "foto 10.jpeg",
+        caption:
+            "And here's to many more memories together. ♡"
     }
-  );
-
-
-/* =================================
-   MEMORIES
-================================= */
-
-const photos = [
-
-  "foto 1.jpeg",
-  "foto 2.jpeg",
-  "foto 3.jpeg",
-  "foto 4.jpeg",
-  "foto 5.jpeg",
-  "foto 6.jpeg",
-  "foto 7.jpeg",
-  "foto 8.jpeg",
-  "foto 9.jpeg",
-  "foto 10.jpeg"
-
-];
-
-
-const captions = [
-
-  "A little memory I'll always keep close. ♡",
-
-  "One of those moments I'll never forget.",
-
-  "Growing up together, one memory at a time.",
-
-  "Another little piece of our story. ♡",
-
-  "A moment worth keeping forever.",
-
-  "Thank you for all these memories.",
-
-  "Just us, being us. ♡",
-
-  "A memory that still makes me smile.",
-
-  "So many moments, so much love.",
-
-  "And there are still so many memories to come. ♡"
 
 ];
 
@@ -513,151 +516,154 @@ const captions = [
 let currentPhoto = 0;
 
 
-const memoryImage =
-  document.getElementById(
-    "memoryImage"
-  );
+function updateMemory(direction = 1) {
 
-const memoryCaption =
-  document.getElementById(
-    "memoryCaption"
-  );
+    polaroid.classList.remove("change");
 
-const memoryNumber =
-  document.getElementById(
-    "memoryNumber"
-  );
+    void polaroid.offsetWidth;
 
-const polaroid =
-  document.getElementById(
-    "polaroid"
-  );
+    polaroid.classList.add("change");
 
 
-function updateMemory() {
-
-  /*
-    Animasi kecil ketika
-    foto berganti.
-  */
-
-  polaroid.style.transform =
-    "rotate(1deg) scale(.96)";
+    const memory =
+        memories[currentPhoto];
 
 
-  setTimeout(
-    () => {
+    /*
+        Di sini src gambar benar-benar
+        berubah setiap NEXT / PREV.
+    */
 
-      memoryImage.src =
-        photos[currentPhoto];
+    memoryPhoto.src =
+        memory.image;
 
+    memoryCaption.textContent =
+        memory.caption;
 
-      memoryCaption.textContent =
-        captions[currentPhoto];
-
-
-      memoryNumber.textContent =
-        `${currentPhoto + 1} / ${photos.length}`;
-
-
-      if (
-        currentPhoto % 2 === 0
-      ) {
-
-        polaroid.style.transform =
-          "rotate(-1deg) scale(1)";
-
-      } else {
-
-        polaroid.style.transform =
-          "rotate(1deg) scale(1)";
-
-      }
-
-    },
-    130
-  );
+    photoCounter.textContent =
+        `${currentPhoto + 1} / ${memories.length}`;
 
 }
 
 
-/* PREVIOUS */
+function nextMemory() {
 
-document
-  .getElementById("previousPhoto")
-  .addEventListener(
-    "click",
-    () => {
+    if (currentPhoto < memories.length - 1) {
 
-      currentPhoto--;
+        currentPhoto++;
 
-      if (
-        currentPhoto < 0
-      ) {
+        updateMemory(1);
 
-        currentPhoto =
-          photos.length - 1;
+    } else {
 
-      }
+        /*
+            Setelah foto ke-10,
+            lanjut ke closing.
+        */
 
-      updateMemory();
+        showScreen(screens.closing);
 
     }
-  );
+
+}
 
 
-/* NEXT PHOTO */
+function previousMemory() {
 
-document
-  .getElementById("nextPhoto")
-  .addEventListener(
-    "click",
-    () => {
+    if (currentPhoto > 0) {
 
-      currentPhoto++;
+        currentPhoto--;
 
-      if (
-        currentPhoto >=
-        photos.length
-      ) {
-
-        currentPhoto = 0;
-
-      }
-
-      updateMemory();
+        updateMemory(-1);
 
     }
-  );
+
+}
 
 
-/* MEMORY → CLOSING */
-
-document
-  .getElementById("memoryNext")
-  .addEventListener(
-    "click",
-    () => {
-
-      showScreen(
-        screens.closing
-      );
-
-    }
-  );
-
-
-/* CLOSING → FINAL */
+/* NEXT tengah */
 
 document
-  .getElementById("closingNext")
-  .addEventListener(
-    "click",
-    () => {
+    .getElementById("nextPhoto")
+    .addEventListener("click", nextMemory);
 
-      showScreen(
-        screens.final
-      );
 
-    }
-  );
+/* Tombol kanan */
+
+document
+    .getElementById("nextPhotoRight")
+    .addEventListener("click", nextMemory);
+
+
+/* Tombol kiri */
+
+document
+    .getElementById("prevPhoto")
+    .addEventListener("click", previousMemory);
+
+
+/* ==========================================
+   CLOSING → FINAL
+========================================== */
+
+document
+    .getElementById("closingNext")
+    .addEventListener("click", () => {
+
+        showScreen(screens.final);
+
+    });
+
+
+/* ==========================================
+   PRELOAD GAMBAR
+========================================== */
+
+const preloadImages = [
+
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png",
+    "5.png",
+    "6.png",
+    "7.png",
+
+    "kunci.png",
+    "spiderman.png",
+
+    "flower 1.png",
+    "flower 2.png",
+    "flower 3.png",
+
+    "background.jpg",
+
+    "foto 1.jpeg",
+    "foto 2.jpeg",
+    "foto 3.jpeg",
+    "foto 4.jpeg",
+    "foto 5.jpeg",
+    "foto 6.jpeg",
+    "foto 7.jpeg",
+    "foto 8.jpeg",
+    "foto 9.jpeg",
+    "foto 10.jpeg"
+
+];
+
+
+preloadImages.forEach(src => {
+
+    const img =
+        new Image();
+
+    img.src = src;
+
+});
+
+
+/* ==========================================
+   START
+========================================== */
+
+showScreen(screens.game);
