@@ -1,3 +1,7 @@
+/* =====================================================
+   BASIC
+===================================================== */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -14,24 +18,39 @@ body {
 
 body {
     font-family: Georgia, "Times New Roman", serif;
-    background: #8f0717;
-    color: white;
+    background: #8e0716;
+    color: #fff;
+    touch-action: manipulation;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+    cursor: pointer;
+    touch-action: manipulation;
 }
 
 
-/* =====================================
-   GENERAL SCREEN
-===================================== */
+/* =====================================================
+   SCREEN
+===================================================== */
 
 .screen {
     position: fixed;
     inset: 0;
-    width: 100%;
+
+    width: 100vw;
     height: 100dvh;
 
     display: none;
 
     overflow: hidden;
+
+    z-index: 1;
 }
 
 .screen.active {
@@ -39,64 +58,40 @@ body {
 }
 
 
-/* =====================================
-   BUTTON
-===================================== */
-
-.main-btn {
-    border: none;
-    background: white;
-    color: #a00018;
-
-    padding: 13px 30px;
-
-    border-radius: 30px;
-
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 1px;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 7px 20px rgba(0, 0, 0, 0.18);
-
-    transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-}
-
-.main-btn:active {
-    transform: scale(0.94);
-}
-
-
-/* =====================================
+/* =====================================================
    MUSIC
-===================================== */
+===================================================== */
 
 .music-btn {
     position: fixed;
 
-    right: 16px;
-    bottom: 16px;
+    right: 18px;
+    bottom: 18px;
 
-    width: 43px;
-    height: 43px;
+    width: 46px;
+    height: 46px;
 
     border-radius: 50%;
 
-    border: 2px solid white;
+    background: rgba(255, 255, 255, 0.95);
+    color: #9b0b1d;
 
-    background: rgba(130, 0, 20, 0.75);
+    font-size: 22px;
 
-    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size: 20px;
+    z-index: 99999;
 
-    z-index: 9999;
+    box-shadow:
+        0 5px 20px rgba(0, 0, 0, 0.25);
 
-    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.music-btn:active {
+    transform: scale(0.9);
 }
 
 .music-btn.playing {
@@ -111,34 +106,68 @@ body {
     }
 
     50% {
-        transform: scale(1.1);
+        transform: scale(1.08);
     }
 }
 
 
-/* =====================================
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.main-btn {
+    min-width: 130px;
+
+    padding: 13px 25px;
+
+    border-radius: 30px;
+
+    background: #fff;
+    color: #9b0b1d;
+
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.2);
+
+    position: relative;
+    z-index: 50;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.main-btn:active {
+    transform: scale(0.94);
+    box-shadow:
+        0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* =====================================================
    GAME
-===================================== */
+===================================================== */
 
 #gameScreen {
     background:
         radial-gradient(
-            circle at center,
-            #d21c35 0%,
-            #a7091d 45%,
-            #760010 100%
+            circle at 50% 30%,
+            #e9283f 0%,
+            #b90f25 42%,
+            #760516 100%
         );
-
-    flex-direction: column;
-    align-items: center;
 }
 
 .game-title {
     position: absolute;
 
-    top: 5.5%;
+    top: 7%;
 
-    width: 90%;
+    left: 20px;
+    right: 20px;
 
     text-align: center;
 
@@ -146,45 +175,50 @@ body {
 }
 
 .game-title h1 {
-    font-size: clamp(18px, 5vw, 28px);
+    font-size: clamp(20px, 6vw, 34px);
 
-    line-height: 1.25;
+    line-height: 1.15;
 
     text-shadow:
-        0 3px 7px rgba(0, 0, 0, 0.3);
+        0 3px 8px rgba(0, 0, 0, 0.25);
+}
+
+.game-title h1 + h1 {
+    margin-top: 4px;
 }
 
 
-/* =====================================
-   BTS MEMBERS
-===================================== */
+/* =====================================================
+   MEMBERS
+===================================================== */
 
 .members {
     position: absolute;
 
-    top: 20%;
-    left: 5%;
-    right: 5%;
+    inset: 0;
 
-    height: 52%;
+    z-index: 20;
 
-    z-index: 10;
+    pointer-events: none;
 }
 
 .member {
     position: absolute;
 
-    border: none;
     background: transparent;
 
     padding: 0;
 
-    cursor: pointer;
+    width: 25vw;
+    max-width: 125px;
 
-    width: 27vw;
-    max-width: 145px;
+    pointer-events: auto;
 
-    transition: filter 0.2s ease;
+    z-index: 25;
+
+    transition:
+        transform 0.2s ease,
+        filter 0.2s ease;
 }
 
 .member img {
@@ -193,224 +227,138 @@ body {
     width: 100%;
     height: auto;
 
-    object-fit: contain;
+    pointer-events: none;
 
-    filter:
-        drop-shadow(0 9px 7px rgba(0, 0, 0, 0.25));
-
-    animation:
-        memberIdle 2.8s ease-in-out infinite;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 
-/*
-    Setiap orang tetap di tempat.
-    Cuma bergerak halus naik-turun
-    seperti sedang hidup/bernapas.
-*/
+/* POSITIONS */
 
 .member-1 {
-    left: 0%;
-    top: 0%;
+    left: 5%;
+    top: 27%;
+
+    animation: float1 3s ease-in-out infinite;
 }
 
 .member-2 {
-    left: 36%;
-    top: 0%;
+    left: 28%;
+    top: 27%;
+
+    animation: float2 3.4s ease-in-out infinite;
 }
 
 .member-3 {
-    right: 0%;
-    top: 0%;
+    right: 27%;
+    top: 27%;
+
+    animation: float3 3.2s ease-in-out infinite;
 }
 
 .member-4 {
-    left: 5%;
-    top: 45%;
+    right: 5%;
+    top: 27%;
+
+    animation: float4 3.5s ease-in-out infinite;
 }
 
 .member-5 {
-    left: 37%;
-    top: 43%;
+    left: 17%;
+    top: 48%;
+
+    animation: float2 3.1s ease-in-out infinite;
 }
 
 .member-6 {
-    right: 5%;
-    top: 45%;
+    right: 17%;
+    top: 48%;
+
+    animation: float1 3.6s ease-in-out infinite;
 }
 
 .member-7 {
-    left: 36%;
-    top: 78%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    top: 48%;
+
+    animation: float3 3.3s ease-in-out infinite;
 }
 
 
-.member-1 img {
-    animation-delay: 0s;
-}
+/* FLOAT */
 
-.member-2 img {
-    animation-delay: -0.5s;
-}
-
-.member-3 img {
-    animation-delay: -1s;
-}
-
-.member-4 img {
-    animation-delay: -1.4s;
-}
-
-.member-5 img {
-    animation-delay: -0.3s;
-}
-
-.member-6 img {
-    animation-delay: -1.8s;
-}
-
-.member-7 img {
-    animation-delay: -0.8s;
-}
-
-@keyframes memberIdle {
+@keyframes float1 {
 
     0%,
     100% {
-        transform:
-            translateY(0)
-            rotate(-1deg);
+        transform: translateY(0) rotate(-1deg);
     }
 
     50% {
-        transform:
-            translateY(-8px)
-            rotate(1deg);
+        transform: translateY(-7px) rotate(1deg);
     }
 }
 
+@keyframes float2 {
 
-/* =====================================
-   SPIDERMAN
-===================================== */
-
-.spiderman {
-    position: absolute;
-
-    width: 30vw;
-    max-width: 145px;
-
-    left: 50%;
-    bottom: 3%;
-
-    transform: translateX(-50%);
-
-    z-index: 12;
-
-    filter:
-        drop-shadow(0 8px 7px rgba(0, 0, 0, 0.3));
-}
-
-
-/* =====================================
-   WRONG ANSWER
-===================================== */
-
-.wrong-message {
-    position: fixed;
-
-    top: 43%;
-    left: 50%;
-
-    transform:
-        translate(-50%, -50%)
-        scale(0);
-
-    opacity: 0;
-
-    z-index: 100;
-
-    text-align: center;
-
-    pointer-events: none;
-}
-
-.wrong-message span {
-    display: block;
-
-    font-family: Arial, sans-serif;
-
-    font-size: 70px;
-
-    font-weight: bold;
-
-    color: white;
-
-    text-shadow:
-        0 5px 10px rgba(0, 0, 0, 0.3);
-}
-
-.wrong-message p {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.wrong-message.show {
-    animation: wrongPopup 0.8s ease;
-}
-
-@keyframes wrongPopup {
-
-    0% {
-        opacity: 0;
-        transform:
-            translate(-50%, -50%)
-            scale(0.3);
-    }
-
-    25% {
-        opacity: 1;
-        transform:
-            translate(-50%, -50%)
-            scale(1.15);
-    }
-
-    70% {
-        opacity: 1;
-        transform:
-            translate(-50%, -50%)
-            scale(1);
-    }
-
+    0%,
     100% {
-        opacity: 0;
-        transform:
-            translate(-50%, -50%)
-            scale(0.9);
+        transform: translateY(0) rotate(1deg);
+    }
+
+    50% {
+        transform: translateY(-9px) rotate(-1deg);
+    }
+}
+
+@keyframes float3 {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(-1deg);
+    }
+
+    50% {
+        transform: translateY(-6px) rotate(2deg);
+    }
+}
+
+@keyframes float4 {
+
+    0%,
+    100% {
+        transform: translateY(0) rotate(1deg);
+    }
+
+    50% {
+        transform: translateY(-8px) rotate(-1deg);
     }
 }
 
 
-/* =====================================
-   SHAKE
-===================================== */
+/* WRONG */
 
-.member.shake {
-    animation: shake 0.45s ease;
+.member.wrong {
+    animation: wrongShake 0.45s ease !important;
+    filter: brightness(0.7);
 }
 
-@keyframes shake {
+@keyframes wrongShake {
 
-    0% {
+    0%,
+    100% {
         transform: translateX(0);
     }
 
     20% {
-        transform: translateX(-8px);
+        transform: translateX(-9px);
     }
 
     40% {
-        transform: translateX(8px);
+        transform: translateX(9px);
     }
 
     60% {
@@ -418,91 +366,204 @@ body {
     }
 
     80% {
-        transform: translateX(6px);
-    }
-
-    100% {
-        transform: translateX(0);
+        transform: translateX(7px);
     }
 }
 
 
-/* =====================================
-   KEY FOUND
-===================================== */
+/* =====================================================
+   WRONG MESSAGE
+===================================================== */
 
-.key-found {
-    position: fixed;
+.wrong-message {
+    position: absolute;
 
-    inset: 0;
+    left: 50%;
+    top: 17%;
 
-    background: rgba(70, 0, 10, 0.72);
+    transform: translateX(-50%) scale(0.7);
 
-    display: none;
+    opacity: 0;
 
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
+    pointer-events: none;
 
     z-index: 200;
 
     text-align: center;
+
+    font-weight: bold;
+    font-size: 20px;
+
+    transition:
+        opacity 0.15s ease,
+        transform 0.15s ease;
 }
 
-.key-found.show {
+.wrong-message.show {
+    opacity: 1;
+
+    transform:
+        translateX(-50%)
+        scale(1);
+}
+
+.wrong-x {
+    width: 40px;
+    height: 40px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #fff;
+    color: #d30b28;
+
+    font-size: 30px;
+    line-height: 36px;
+
+    margin-bottom: 5px;
+}
+
+
+/* =====================================================
+   SPIDER-MAN
+===================================================== */
+
+.spiderman {
+    position: absolute;
+
+    width: min(38vw, 180px);
+
+    left: 50%;
+    bottom: 2%;
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    pointer-events: none;
+
+    user-select: none;
+}
+
+
+/* =====================================================
+   KEY FOUND
+===================================================== */
+
+.key-found {
+    position: absolute;
+
+    inset: 0;
+
     display: flex;
-}
-
-.key-box {
-    animation:
-        keyAppear 0.9s
-        cubic-bezier(.17, .89, .32, 1.49);
-}
-
-.key-box img {
-    width: 45vw;
-    max-width: 220px;
-
-    filter:
-        drop-shadow(0 10px 12px rgba(0, 0, 0, 0.35));
-}
-
-.key-found h2 {
-    margin: 10px 0 22px;
-
-    font-size: 34px;
-}
-
-@keyframes keyAppear {
-
-    0% {
-        opacity: 0;
-        transform: scale(0.1) rotate(-30deg);
-    }
-
-    60% {
-        transform: scale(1.25) rotate(8deg);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) rotate(0);
-    }
-}
-
-
-/* =====================================
-   FLOWERS
-===================================== */
-
-.flower-screen {
-    background: #8f0717;
-
     align-items: center;
     justify-content: center;
 
+    background: rgba(70, 0, 10, 0.72);
+
+    opacity: 0;
+    visibility: hidden;
+
+    pointer-events: none;
+
     z-index: 500;
+
+    transition: opacity 0.25s ease;
+}
+
+.key-found.show {
+    opacity: 1;
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+.key-card {
+    width: min(82vw, 340px);
+
+    padding: 25px 20px 22px;
+
+    border-radius: 25px;
+
+    background: #fff;
+
+    color: #9b0b1d;
+
+    text-align: center;
+
+    box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.35);
+
+    transform: scale(0.7);
+
+    animation: none;
+}
+
+.key-found.show .key-card {
+    animation: keyPop 0.4s ease forwards;
+}
+
+@keyframes keyPop {
+
+    0% {
+        transform: scale(0.7);
+    }
+
+    70% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.key-image-wrap {
+    height: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.key-image-wrap img {
+    width: 110px;
+    max-height: 125px;
+
+    object-fit: contain;
+
+    animation: keyBounce 1s infinite ease-in-out;
+}
+
+@keyframes keyBounce {
+
+    0%,
+    100% {
+        transform: scale(1) rotate(-3deg);
+    }
+
+    50% {
+        transform: scale(1.12) rotate(3deg);
+    }
+}
+
+.key-card h2 {
+    margin: 5px 0 18px;
+
+    font-size: 28px;
+}
+
+
+/* =====================================================
+   FLOWERS
+===================================================== */
+
+.flower-screen {
+    background: #fff;
+
+    align-items: center;
+    justify-content: center;
 }
 
 #flowerContainer {
@@ -513,82 +574,77 @@ body {
     overflow: hidden;
 }
 
-.flower {
+.transition-flower {
     position: absolute;
 
-    width: clamp(105px, 28vw, 180px);
+    left: 50%;
+    top: 50%;
 
-    left: calc(50% + var(--x));
-    top: calc(50% + var(--y));
+    width: 45px;
+
+    max-width: none;
+
+    object-fit: contain;
+
+    pointer-events: none;
 
     transform:
         translate(-50%, -50%)
-        scale(0.03)
+        scale(0)
         rotate(0deg);
 
-    opacity: 0;
-
     animation:
-        flowerBloom 1.55s
-        cubic-bezier(.2, .75, .25, 1)
+        flowerGrow 2.2s cubic-bezier(0.2, 0.8, 0.2, 1)
         forwards;
-
-    animation-delay: var(--delay);
-
-    z-index: 2;
 }
 
-.flower img {
-    display: block;
-
-    width: 100%;
-    height: auto;
-
-    filter:
-        drop-shadow(0 8px 8px rgba(0, 0, 0, 0.15));
-}
-
-@keyframes flowerBloom {
+@keyframes flowerGrow {
 
     0% {
+        left: 50%;
+        top: 50%;
+
+        width: 35px;
+
         opacity: 0;
 
         transform:
             translate(-50%, -50%)
-            scale(0.02)
-            rotate(-15deg);
+            scale(0)
+            rotate(0deg);
     }
 
     15% {
         opacity: 1;
     }
 
-    70% {
-        opacity: 1;
-    }
-
     100% {
+        left: var(--x);
+        top: var(--y);
+
+        width: 75vw;
+
         opacity: 1;
 
         transform:
             translate(-50%, -50%)
-            scale(var(--scale))
-            rotate(var(--rotation));
+            scale(1)
+            rotate(360deg);
     }
 }
 
 
-/* =====================================
+/* =====================================================
    PIN
-===================================== */
+===================================================== */
 
 .pin-screen {
     background:
         radial-gradient(
-            circle at 50% 40%,
-            #d41b36,
-            #a2081c 55%,
-            #75000f
+            circle at center,
+            #df2037 0%,
+            #a70b20 45%,
+            #650512 100%
         );
 
     align-items: center;
@@ -600,126 +656,85 @@ body {
 .pin-content {
     position: relative;
 
-    width: 88%;
-    max-width: 400px;
+    width: min(88vw, 400px);
 
-    z-index: 5;
+    padding: 20px;
+
+    z-index: 10;
 }
 
 .pin-icon {
-    font-size: 50px;
+    font-size: 48px;
 
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
-.pin-content h1 {
-    font-size: 29px;
-
+.pin-content .small-title {
     margin-bottom: 8px;
 }
 
-.pin-content > p {
-    font-size: 15px;
+.pin-content h1 {
+    font-size: clamp(27px, 8vw, 42px);
 
+    margin-bottom: 10px;
+}
+
+.pin-content > p:not(.small-title):not(.pin-error) {
     opacity: 0.9;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
 #pinInput {
+    display: block;
+
     width: 100%;
 
-    height: 58px;
+    height: 55px;
 
     border: 2px solid rgba(255, 255, 255, 0.8);
 
-    border-radius: 15px;
+    border-radius: 16px;
 
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.12);
 
-    color: white;
+    color: #fff;
 
     text-align: center;
 
-    font-size: 27px;
+    font-size: 25px;
 
     letter-spacing: 8px;
 
     outline: none;
 
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 #pinInput::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .pin-error {
-    display: none;
+    min-height: 22px;
 
-    color: #ffe2e2 !important;
+    color: #ffe4e7;
 
-    margin-bottom: 12px !important;
-}
+    font-size: 14px;
 
-.pin-error.show {
-    display: block;
-}
-
-
-/* =====================================
-   SPARKLES
-===================================== */
-
-.sparkles {
-    position: absolute;
-
-    inset: 0;
-
-    pointer-events: none;
-
-    background-image:
-        radial-gradient(circle, white 1px, transparent 2px),
-        radial-gradient(circle, rgba(255,255,255,.8) 1px, transparent 2px),
-        radial-gradient(circle, rgba(255,255,255,.5) 1px, transparent 2px);
-
-    background-size:
-        47px 53px,
-        71px 67px,
-        93px 81px;
-
-    animation: sparkleMove 7s linear infinite;
-
-    opacity: 0.8;
-}
-
-@keyframes sparkleMove {
-    from {
-        background-position:
-            0 0,
-            20px 30px,
-            40px 10px;
-    }
-
-    to {
-        background-position:
-            47px 53px,
-            91px 97px,
-            113px 91px;
-    }
+    margin-bottom: 10px;
 }
 
 
-/* =====================================
+/* =====================================================
    BIRTHDAY
-===================================== */
+===================================================== */
 
 .birthday-screen {
-    background:
-        url("background.jpg")
-        center center /
-        cover
-        no-repeat;
+    background-image: url("background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
     align-items: center;
     justify-content: center;
@@ -733,177 +748,172 @@ body {
     inset: 0;
 
     background:
-        rgba(50, 0, 10, 0.42);
+        linear-gradient(
+            rgba(80, 0, 10, 0.25),
+            rgba(80, 0, 10, 0.55)
+        );
 }
 
 .birthday-content {
     position: relative;
 
-    z-index: 2;
+    z-index: 10;
 
-    width: 90%;
+    padding: 25px;
+
+    text-shadow:
+        0 3px 12px rgba(0, 0, 0, 0.45);
 }
 
 .birthday-content h1 {
-    font-size: clamp(32px, 9vw, 58px);
+    font-size: clamp(38px, 11vw, 65px);
 
-    line-height: 1.1;
-
-    text-shadow:
-        0 5px 18px rgba(0, 0, 0, 0.5);
+    line-height: 1.05;
 }
 
 .birthday-content .main-btn {
-    margin-top: 32px;
+    margin-top: 28px;
 }
 
 
-/* =====================================
-   LETTER / CONTENT
-===================================== */
+/* =====================================================
+   CONTENT SCREENS
+===================================================== */
 
 .content-screen {
     background:
         linear-gradient(
-            145deg,
-            #b30b22,
-            #780011
+            135deg,
+            #9c081c,
+            #d51b36
         );
 
     align-items: center;
     justify-content: center;
 
-    padding: 25px 18px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    padding: 30px 18px;
 }
 
 .letter-card,
 .closing-card {
-    width: 100%;
-    max-width: 500px;
+    width: min(92vw, 560px);
 
-    max-height: 88dvh;
+    max-height: calc(100dvh - 40px);
 
     overflow-y: auto;
 
-    background:
-        rgba(255, 255, 255, 0.97);
-
-    color: #5e0915;
+    padding: 30px 24px;
 
     border-radius: 25px;
 
-    padding: 30px 24px;
+    background: rgba(255, 255, 255, 0.97);
+
+    color: #4c1018;
 
     text-align: center;
 
     box-shadow:
-        0 20px 50px rgba(0, 0, 0, 0.3);
+        0 15px 50px rgba(0, 0, 0, 0.3);
 }
 
 .small-title {
-    font-family: Arial, sans-serif;
-
     font-size: 11px;
-
-    font-weight: bold;
 
     letter-spacing: 3px;
 
-    color: #a2091d;
+    font-weight: bold;
 
-    margin-bottom: 10px;
+    opacity: 0.75;
+
+    margin-bottom: 12px;
 }
 
 .letter-card h1,
 .closing-card h1 {
-    font-size: 28px;
+    font-size: clamp(26px, 7vw, 40px);
 
-    margin-bottom: 22px;
+    line-height: 1.1;
+
+    margin-bottom: 25px;
 }
 
 .letter-text {
     text-align: left;
 
-    line-height: 1.65;
+    font-size: 16px;
 
-    font-size: 15px;
+    line-height: 1.65;
 }
 
 .letter-text p {
-    margin-bottom: 15px;
+    margin-bottom: 16px;
 }
 
 .signature {
     text-align: right;
-
-    margin-top: 22px;
 
     font-style: italic;
 }
 
 .letter-card .main-btn,
 .closing-card .main-btn {
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 
-/* =====================================
+/* =====================================================
    MEMORY
-===================================== */
+===================================================== */
 
 .memory-screen {
     background:
         radial-gradient(
-            circle at center,
-            #d51a35,
-            #98071a 60%,
-            #71000e
+            circle at 50% 40%,
+            #e83248,
+            #a30920 70%
         );
 
     flex-direction: column;
 
     align-items: center;
+    justify-content: space-between;
 
     padding:
-        25px 15px 20px;
+        max(25px, env(safe-area-inset-top))
+        15px
+        max(20px, env(safe-area-inset-bottom));
 }
 
 .memory-header {
     text-align: center;
 
-    flex-shrink: 0;
-}
+    padding-top: 5px;
 
-.memory-header p {
-    font-family: Arial, sans-serif;
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 8px;
-
-    opacity: 0.8;
+    z-index: 10;
 }
 
 .memory-header h1 {
-    font-size: 25px;
+    font-size: clamp(25px, 7vw, 40px);
 
-    margin-bottom: 6px;
+    line-height: 1.1;
+
+    margin-bottom: 8px;
 }
 
 #photoCounter {
-    font-family: Arial, sans-serif;
+    display: inline-block;
+
+    padding: 4px 12px;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.2);
 
     font-size: 13px;
-
-    opacity: 0.8;
 }
-
-
-/* =====================================
-   POLAROID
-===================================== */
 
 .polaroid-area {
     flex: 1;
@@ -911,60 +921,30 @@ body {
     width: 100%;
 
     display: flex;
-
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 
     min-height: 0;
 }
 
 .polaroid {
-    width: min(80vw, 340px);
+    width: min(78vw, 360px);
 
     background: #fff;
 
-    padding:
-        13px
-        13px
-        24px;
+    padding: 12px 12px 20px;
 
     box-shadow:
-        0 18px 35px rgba(0, 0, 0, 0.3);
+        0 15px 35px rgba(0, 0, 0, 0.3);
 
-    transform:
-        rotate(-1.5deg);
+    transform: rotate(-1.5deg);
 
     transition:
-        transform 0.35s ease;
+        transform 0.25s ease;
 }
 
-.polaroid.change {
-    animation:
-        photoChange 0.45s ease;
-}
-
-@keyframes photoChange {
-
-    0% {
-        opacity: 0.3;
-        transform:
-            rotate(-3deg)
-            scale(0.96);
-    }
-
-    50% {
-        opacity: 0.7;
-        transform:
-            rotate(3deg)
-            scale(1.02);
-    }
-
-    100% {
-        opacity: 1;
-        transform:
-            rotate(-1.5deg)
-            scale(1);
-    }
+.polaroid:active {
+    transform: rotate(0deg) scale(0.98);
 }
 
 .photo-holder {
@@ -972,9 +952,9 @@ body {
 
     aspect-ratio: 1 / 1;
 
-    overflow: hidden;
-
     background: #eee;
+
+    overflow: hidden;
 }
 
 .photo-holder img {
@@ -984,37 +964,31 @@ body {
     display: block;
 
     object-fit: cover;
+
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
 .caption-holder {
-    min-height: 60px;
+    min-height: 72px;
 
     display: flex;
 
     align-items: center;
     justify-content: center;
 
-    padding-top: 12px;
+    padding: 12px 8px 0;
+
+    color: #481019;
+
+    text-align: center;
 }
 
 .caption-holder p {
-    color: #3d2222;
-
-    font-family:
-        "Comic Sans MS",
-        cursive;
-
-    font-size: 14px;
-
-    text-align: center;
+    font-size: clamp(13px, 3.5vw, 17px);
 
     line-height: 1.4;
 }
-
-
-/* =====================================
-   MEMORY CONTROLS
-===================================== */
 
 .memory-controls {
     width: 100%;
@@ -1024,87 +998,65 @@ body {
     align-items: center;
     justify-content: center;
 
-    gap: 15px;
+    gap: 14px;
 
-    flex-shrink: 0;
-
-    padding-top: 10px;
+    z-index: 20;
 }
 
 .circle-btn {
-    width: 42px;
-    height: 42px;
+    width: 46px;
+    height: 46px;
 
     border-radius: 50%;
 
-    border: 1px solid rgba(255,255,255,.7);
+    background: rgba(255, 255, 255, 0.95);
 
-    background:
-        rgba(255,255,255,.15);
+    color: #a30920;
 
-    color: white;
+    font-size: 30px;
 
-    font-size: 27px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    cursor: pointer;
+    box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.memory-controls .main-btn {
-    min-width: 110px;
-}
 
-
-/* =====================================
+/* =====================================================
    CLOSING
-===================================== */
+===================================================== */
 
 .closing-card {
-    padding: 35px 25px;
+    font-size: 17px;
+
+    line-height: 1.6;
+}
+
+.closing-card p:not(.small-title) {
+    margin-bottom: 18px;
 }
 
 .heart {
-    font-size: 55px;
+    font-size: 48px;
 
-    color: #c40c28;
+    color: #d31332;
 
-    margin-bottom: 10px;
-
-    animation:
-        heartBeat 1.5s infinite;
-}
-
-@keyframes heartBeat {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.1);
-    }
-}
-
-.closing-card > p:not(.small-title) {
-    line-height: 1.65;
-
-    font-size: 15px;
-
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 
-/* =====================================
+/* =====================================================
    FINAL
-===================================== */
+===================================================== */
 
 .final-screen {
     background:
         radial-gradient(
             circle at center,
-            #d51b36,
-            #99091c 55%,
-            #70000e
+            #df2037,
+            #8b0719 75%
         );
 
     align-items: center;
@@ -1114,90 +1066,105 @@ body {
 }
 
 .final-content {
-    width: 90%;
+    width: min(88vw, 600px);
 
-    max-width: 500px;
+    padding: 25px;
+
+    font-size: clamp(17px, 4.5vw, 22px);
+
+    line-height: 1.7;
 }
 
 .final-heart {
     font-size: 65px;
 
-    margin-bottom: 25px;
-
-    animation:
-        heartBeat 1.6s infinite;
-}
-
-.final-content p {
-    font-size: 19px;
-
-    line-height: 1.55;
-
-    margin-bottom: 4px;
+    margin-bottom: 15px;
 }
 
 .final-line {
-    width: 60px;
-
+    width: 80px;
     height: 1px;
 
-    background: rgba(255,255,255,.7);
+    background: rgba(255, 255, 255, 0.6);
 
     margin: 25px auto;
 }
 
 .final-content h1 {
-    font-size: 28px;
+    font-size: clamp(27px, 8vw, 43px);
 
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
 .final-content .from {
-    margin-top: 20px;
+    margin-top: 18px;
 
-    font-size: 15px;
-
-    opacity: 0.8;
+    font-style: italic;
 }
 
 
-/* =====================================
-   SMALL PHONES
-===================================== */
+/* =====================================================
+   SMALL PHONE
+===================================================== */
 
-@media (max-height: 680px) {
+@media (max-height: 700px) {
 
     .game-title {
-        top: 3%;
-    }
-
-    .members {
-        top: 17%;
-        height: 55%;
+        top: 4%;
     }
 
     .member {
-        width: 23vw;
+        width: 21vw;
+    }
+
+    .member-1,
+    .member-2,
+    .member-3,
+    .member-4 {
+        top: 23%;
+    }
+
+    .member-5,
+    .member-6,
+    .member-7 {
+        top: 43%;
     }
 
     .spiderman {
-        width: 25vw;
-    }
-
-    .birthday-content h1 {
-        font-size: 30px;
-    }
-
-    .letter-card,
-    .closing-card {
-        max-height: 84dvh;
-
-        padding:
-            22px 20px;
+        width: 28vw;
     }
 
     .polaroid {
-        width: min(70vw, 290px);
+        width: min(70vw, 310px);
+    }
+
+}
+
+
+/* =====================================================
+   VERY SMALL PHONE
+===================================================== */
+
+@media (max-width: 360px) {
+
+    .game-title h1 {
+        font-size: 18px;
+    }
+
+    .member {
+        width: 22vw;
+    }
+
+    .member-1 {
+        left: 3%;
+    }
+
+    .member-4 {
+        right: 3%;
+    }
+
+    .polaroid {
+        width: 72vw;
     }
 
 }
