@@ -1,5 +1,5 @@
 /* ==========================================
-   ELEMENTS
+   SCREEN
 ========================================== */
 
 const screens = {
@@ -12,11 +12,6 @@ const screens = {
     closing: document.getElementById("closingScreen"),
     final: document.getElementById("finalScreen")
 };
-
-
-/* ==========================================
-   SCREEN SWITCHER
-========================================== */
 
 function showScreen(screen) {
 
@@ -39,44 +34,74 @@ const musicBtn = document.getElementById("musicBtn");
 
 let musicPlaying = false;
 
-music.volume = 0.45;
+music.volume = 0.5;
 
 
 /*
-    Music TIDAK autoplay.
-    Baru menyala setelah tombol ditekan.
+    TIDAK autoplay.
+    Musik mulai ketika tombol ditekan.
 */
 
 musicBtn.addEventListener("click", async () => {
 
     try {
 
-        if (musicPlaying) {
-
-            music.pause();
-
-            musicPlaying = false;
-
-            musicBtn.classList.remove("playing");
-
-            musicBtn.textContent = "♫";
-
-        } else {
+        if (music.paused) {
 
             await music.play();
 
             musicPlaying = true;
 
             musicBtn.classList.add("playing");
-
             musicBtn.textContent = "❚❚";
+
+        } else {
+
+            music.pause();
+
+            musicPlaying = false;
+
+            musicBtn.classList.remove("playing");
+            musicBtn.textContent = "♫";
+
         }
 
     } catch (error) {
 
-        console.log("Music tidak dapat dimainkan:", error);
+        console.error("Music error:", error);
+
+        alert(
+            "Musik tidak bisa diputar. Pastikan file sunflower.mp3 ada di GitHub."
+        );
 
     }
+
+});
+
+music.addEventListener("play", () => {
+
+    musicPlaying = true;
+
+    musicBtn.classList.add("playing");
+    musicBtn.textContent = "❚❚";
+
+});
+
+music.addEventListener("pause", () => {
+
+    musicPlaying = false;
+
+    musicBtn.classList.remove("playing");
+    musicBtn.textContent = "♫";
+
+});
+
+music.addEventListener("error", () => {
+
+    console.error(
+        "File musik tidak ditemukan:",
+        music.currentSrc
+    );
 
 });
 
@@ -86,32 +111,21 @@ musicBtn.addEventListener("click", async () => {
 ========================================== */
 
 const members = document.querySelectorAll(".member");
-
-const wrongMessage =
-    document.getElementById("wrongMessage");
-
-const keyFound =
-    document.getElementById("keyFound");
-
+const wrongMessage = document.getElementById("wrongMessage");
+const keyFound = document.getElementById("keyFound");
 
 let gameFinished = false;
-
 
 members.forEach(member => {
 
     member.addEventListener("click", () => {
 
-        if (gameFinished) {
-            return;
-        }
+        if (gameFinished) return;
 
-        const number =
-            member.dataset.member;
+        const number = member.dataset.member;
 
 
-        /* =========================
-           BENAR: NOMOR 7
-        ========================== */
+        /* NOMOR 7 = BENAR */
 
         if (number === "7") {
 
@@ -123,9 +137,7 @@ members.forEach(member => {
         }
 
 
-        /* =========================
-           SALAH
-        ========================== */
+        /* YANG LAIN = SALAH */
 
         member.classList.remove("shake");
 
@@ -139,20 +151,13 @@ members.forEach(member => {
 
         wrongMessage.classList.add("show");
 
-
-        setTimeout(() => {
-
-            member.classList.remove("shake");
-
-        }, 500);
-
     });
 
 });
 
 
 /* ==========================================
-   FLOWER TRANSITION
+   FLOWERS
 ========================================== */
 
 const nextFlowerBtn =
@@ -161,35 +166,20 @@ const nextFlowerBtn =
 const flowerContainer =
     document.getElementById("flowerContainer");
 
-
 const flowerImages = [
     "flower 1.png",
     "flower 2.png",
     "flower 3.png"
 ];
 
-
 function createFlowers() {
 
     flowerContainer.innerHTML = "";
-
-
-    /*
-        Bukan random berantakan.
-
-        Bunga dibuat dalam pola grid besar
-        yang titik awalnya semuanya dari tengah,
-        kemudian mekar menuju seluruh layar.
-
-        Jumlah:
-        10 kolom x 10 baris = 100 bunga.
-    */
 
     const columns = 10;
     const rows = 10;
 
     let index = 0;
-
 
     for (let row = 0; row < rows; row++) {
 
@@ -201,14 +191,6 @@ function createFlowers() {
             flower.className = "flower";
 
 
-            /*
-                Target posisi melebar sampai
-                melewati tepi layar.
-
-                Ini membuat layar benar-benar
-                tertutup bunga tanpa lubang besar.
-            */
-
             const x =
                 -55 +
                 (col / (columns - 1)) * 110;
@@ -218,15 +200,10 @@ function createFlowers() {
                 (row / (rows - 1)) * 140;
 
 
-            /*
-                Sedikit variasi agar tidak terlihat
-                seperti tabel kaku, tetapi tetap rapi.
-            */
-
-            const tinyX =
+            const xVariation =
                 Math.sin(index * 1.7) * 3;
 
-            const tinyY =
+            const yVariation =
                 Math.cos(index * 1.3) * 3;
 
 
@@ -240,31 +217,19 @@ function createFlowers() {
                 ((index * 23) % 30);
 
 
-            /*
-                Bunga berganti:
-                flower 1
-                flower 2
-                flower 3
-                lalu ulang.
-            */
-
-            const image =
-                flowerImages[index % flowerImages.length];
-
-
             flower.innerHTML = `
-                <img src="${image}" alt="">
+                <img src="${flowerImages[index % 3]}" alt="">
             `;
 
 
             flower.style.setProperty(
                 "--x",
-                `${x + tinyX}vw`
+                `${x + xVariation}vw`
             );
 
             flower.style.setProperty(
                 "--y",
-                `${y + tinyY}vh`
+                `${y + yVariation}vh`
             );
 
             flower.style.setProperty(
@@ -278,16 +243,9 @@ function createFlowers() {
             );
 
 
-            /*
-                Bunga muncul cepat,
-                tetapi tetap terasa seperti
-                gelombang yang menyebar.
-            */
-
             const delay =
                 (index % 10) * 0.025 +
                 Math.floor(index / 10) * 0.018;
-
 
             flower.style.setProperty(
                 "--delay",
@@ -308,12 +266,6 @@ nextFlowerBtn.addEventListener("click", () => {
     showScreen(screens.flower);
 
     createFlowers();
-
-
-    /*
-        Tunggu bunga benar-benar memenuhi layar,
-        baru masuk PIN.
-    */
 
     setTimeout(() => {
 
@@ -337,33 +289,26 @@ const pinBtn =
 const pinError =
     document.getElementById("pinError");
 
-
 const correctPIN = "26092000";
 
 
 function checkPIN() {
 
-    const value =
-        pinInput.value.trim();
-
-
-    if (value === correctPIN) {
+    if (pinInput.value === correctPIN) {
 
         pinError.classList.remove("show");
 
-        pinInput.blur();
-
         showScreen(screens.birthday);
 
-        return;
+    } else {
+
+        pinError.classList.add("show");
+
+        pinInput.value = "";
+
+        pinInput.focus();
+
     }
-
-
-    pinError.classList.add("show");
-
-    pinInput.value = "";
-
-    pinInput.focus();
 
 }
 
@@ -381,10 +326,6 @@ pinInput.addEventListener("keydown", event => {
 
 });
 
-
-/*
-    Hanya boleh angka.
-*/
 
 pinInput.addEventListener("input", () => {
 
@@ -440,12 +381,8 @@ const polaroid =
 
 
 /*
-    PENTING:
-
-    Setiap foto benar-benar memakai
-    file yang berbeda.
-
-    Tidak ada foto yang diulang.
+    10 FOTO BERBEDA.
+    Foto benar-benar berganti file.
 */
 
 const memories = [
@@ -516,7 +453,7 @@ const memories = [
 let currentPhoto = 0;
 
 
-function updateMemory(direction = 1) {
+function updateMemory() {
 
     polaroid.classList.remove("change");
 
@@ -530,36 +467,30 @@ function updateMemory(direction = 1) {
 
 
     /*
-        Di sini src gambar benar-benar
-        berubah setiap NEXT / PREV.
+        INI YANG MENGGANTI FOTO:
+        foto 1 → foto 2 → ... → foto 10
     */
 
-    memoryPhoto.src =
-        memory.image;
+    memoryPhoto.src = memory.image;
 
     memoryCaption.textContent =
         memory.caption;
 
     photoCounter.textContent =
-        `${currentPhoto + 1} / ${memories.length}`;
+        `${currentPhoto + 1} / 10`;
 
 }
 
 
 function nextMemory() {
 
-    if (currentPhoto < memories.length - 1) {
+    if (currentPhoto < 9) {
 
         currentPhoto++;
 
-        updateMemory(1);
+        updateMemory();
 
     } else {
-
-        /*
-            Setelah foto ke-10,
-            lanjut ke closing.
-        */
 
         showScreen(screens.closing);
 
@@ -574,28 +505,20 @@ function previousMemory() {
 
         currentPhoto--;
 
-        updateMemory(-1);
+        updateMemory();
 
     }
 
 }
 
 
-/* NEXT tengah */
-
 document
     .getElementById("nextPhoto")
     .addEventListener("click", nextMemory);
 
-
-/* Tombol kanan */
-
 document
     .getElementById("nextPhotoRight")
     .addEventListener("click", nextMemory);
-
-
-/* Tombol kiri */
 
 document
     .getElementById("prevPhoto")
@@ -616,7 +539,7 @@ document
 
 
 /* ==========================================
-   PRELOAD GAMBAR
+   PRELOAD FOTO
 ========================================== */
 
 const preloadImages = [
@@ -651,19 +574,15 @@ const preloadImages = [
 
 ];
 
-
 preloadImages.forEach(src => {
 
-    const img =
-        new Image();
+    const img = new Image();
 
     img.src = src;
 
 });
 
 
-/* ==========================================
-   START
-========================================== */
+/* START */
 
 showScreen(screens.game);
