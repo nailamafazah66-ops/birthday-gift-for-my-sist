@@ -1,663 +1,912 @@
-/* =================================
-   SCREEN
-================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
-const screens = {
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    font-family: Georgia, "Times New Roman", serif;
+    overflow-x: hidden;
+}
 
-  game:
-    document.getElementById("gameScreen"),
+body {
+    background: #8d1020;
+}
 
-  flowers:
-    document.getElementById("flowerScreen"),
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+}
 
-  pin:
-    document.getElementById("pinScreen"),
+.page {
+    display: none;
+    min-height: 100vh;
+    width: 100%;
+}
 
-  birthday:
-    document.getElementById("birthdayScreen"),
-
-  letter:
-    document.getElementById("letterScreen"),
-
-  memory:
-    document.getElementById("memoryScreen"),
-
-  closing:
-    document.getElementById("closingScreen"),
-
-  final:
-    document.getElementById("finalScreen")
-
-};
-
-
-function showScreen(screen) {
-
-  Object.values(screens).forEach(
-    item => item.classList.remove("active")
-  );
-
-  screen.classList.add("active");
-
+.page.active {
+    display: block;
 }
 
 
-/* =================================
-   MUSIC
-================================= */
+/* ================= MUSIC ================= */
 
-const music =
-  document.getElementById("music");
+.music-btn {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9999;
 
-const musicBtn =
-  document.getElementById("musicBtn");
+    width: 44px;
+    height: 44px;
 
-let musicPlaying = false;
+    border-radius: 50%;
 
-music.volume = 0.55;
+    background: rgba(255, 255, 255, 0.92);
+    color: #a10f23;
+
+    font-size: 20px;
+
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.2);
+}
 
 
-musicBtn.addEventListener(
-  "click",
-  async () => {
+/* ================= GENERAL BUTTON ================= */
 
-    try {
+.main-btn {
+    padding: 12px 25px;
 
-      if (musicPlaying) {
+    border-radius: 30px;
 
-        music.pause();
+    background: white;
+    color: #a20f24;
 
-        musicPlaying = false;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
 
-      } else {
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
 
-        await music.play();
+    transition: 0.2s ease;
+}
 
-        musicPlaying = true;
+.main-btn:hover {
+    transform: translateY(-2px);
+}
 
-      }
+.hidden {
+    display: none !important;
+}
 
-    } catch (error) {
 
-      console.log(
-        "Music error:",
-        error
-      );
+/* ================= GAME ================= */
 
+#gamePage {
+    position: relative;
+    min-height: 100vh;
+
+    background:
+        radial-gradient(circle at top, #e52d45, transparent 50%),
+        #a80f25;
+
+    color: white;
+
+    padding: 35px 15px 30px;
+
+    overflow: hidden;
+}
+
+.game-title {
+    text-align: center;
+    position: relative;
+    z-index: 5;
+}
+
+.game-title h1 {
+    font-size: 27px;
+    margin-bottom: 7px;
+}
+
+.game-title p {
+    font-size: 16px;
+    opacity: 0.95;
+}
+
+.game-area {
+    position: relative;
+
+    width: 100%;
+    max-width: 430px;
+
+    height: 560px;
+
+    margin: 5px auto 0;
+}
+
+.member-grid {
+    position: absolute;
+
+    width: 100%;
+    height: 390px;
+
+    top: 25px;
+    left: 0;
+
+    display: grid;
+
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+
+    align-items: center;
+    justify-items: center;
+
+    z-index: 3;
+}
+
+.member {
+    background: transparent;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: transform 0.2s ease;
+}
+
+.member img {
+    max-width: 100%;
+    max-height: 125px;
+
+    object-fit: contain;
+
+    filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.2));
+
+    transition: transform 0.2s ease;
+}
+
+.member:hover img {
+    transform: scale(1.05);
+}
+
+
+/* Posisi 7 member */
+
+#member1 {
+    grid-column: 1 / 3;
+    grid-row: 1;
+}
+
+#member2 {
+    grid-column: 3 / 5;
+    grid-row: 1;
+}
+
+#member3 {
+    grid-column: 5 / 7;
+    grid-row: 1;
+}
+
+#member4 {
+    grid-column: 1 / 4;
+    grid-row: 2;
+}
+
+#member5 {
+    grid-column: 4 / 7;
+    grid-row: 2;
+}
+
+#member6 {
+    grid-column: 1 / 4;
+    grid-row: 3;
+}
+
+#member7 {
+    grid-column: 4 / 7;
+    grid-row: 3;
+}
+
+
+/* Spider-Man */
+
+.spiderman {
+    position: absolute;
+
+    width: 125px;
+
+    left: 50%;
+    bottom: 15px;
+
+    transform: translateX(-50%);
+
+    z-index: 4;
+
+    filter: drop-shadow(0 7px 5px rgba(0, 0, 0, 0.25));
+}
+
+
+/* Key */
+
+.key {
+    position: absolute;
+
+    width: 105px;
+
+    left: 50%;
+    top: 210px;
+
+    transform: translate(-50%, -50%) scale(0);
+
+    opacity: 0;
+
+    z-index: 6;
+}
+
+.key.show {
+    animation: keyAppear 0.7s ease forwards;
+}
+
+@keyframes keyAppear {
+
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0) rotate(-25deg);
     }
 
-  }
-);
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.25) rotate(8deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1) rotate(0);
+    }
+}
 
 
-/* =================================
-   GAME
-================================= */
+.game-message {
+    height: 30px;
 
-const members =
-  document.querySelectorAll(".member");
+    text-align: center;
 
-const wrongMessage =
-  document.getElementById(
-    "wrongMessage"
-  );
+    font-size: 17px;
+    font-weight: bold;
 
-const keyFound =
-  document.getElementById(
-    "keyFound"
-  );
+    position: relative;
+    z-index: 8;
+}
+
+.wrong {
+    animation: wrongShake 0.4s ease;
+}
+
+@keyframes wrongShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    75% {
+        transform: translateX(-7px);
+    }
+}
+
+.member.disabled {
+    pointer-events: none;
+    opacity: 0.45;
+}
+
+.member.correct {
+    animation: correctBounce 0.5s ease;
+}
+
+@keyframes correctBounce {
+
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+#nextGame {
+    display: block;
+    margin: -5px auto 0;
+
+    position: relative;
+    z-index: 10;
+}
 
 
-members.forEach(member => {
+/* ================= FLOWER TRANSITION ================= */
 
-  member.addEventListener(
-    "click",
-    () => {
+.flower-page {
+    position: fixed;
 
-      const number =
-        member.dataset.member;
+    inset: 0;
+
+    background: #fff;
+
+    overflow: hidden;
+
+    z-index: 1000;
+}
+
+#flowerContainer {
+    position: absolute;
+
+    inset: 0;
+}
+
+.transition-flower {
+    position: absolute;
+
+    width: 180px;
+
+    left: 50%;
+    top: 50%;
+
+    transform:
+        translate(-50%, -50%)
+        scale(0);
+
+    opacity: 0.95;
+
+    object-fit: contain;
+
+    animation: flowerExpand 1.45s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
+}
+
+@keyframes flowerExpand {
+
+    0% {
+        transform:
+            translate(-50%, -50%)
+            scale(0);
+    }
+
+    45% {
+        transform:
+            translate(-50%, -50%)
+            scale(3);
+    }
+
+    100% {
+        transform:
+            translate(
+                calc(-50% + var(--x)),
+                calc(-50% + var(--y))
+            )
+            scale(8);
+    }
+}
 
 
-      /* =========================
-         CORRECT = MEMBER 7
-      ========================== */
+/* ================= PIN ================= */
 
-      if (number === "7") {
+.pin-page {
+    position: relative;
 
-        members.forEach(
-          m => m.disabled = true
+    min-height: 100vh;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at center, #d92842, #920d21 75%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+}
+
+
+/*
+   BINTANG FULL SCREEN
+   Bukan hanya sebelah kiri.
+*/
+
+.stars {
+    position: absolute;
+
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.stars::before,
+.stars::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -50%;
+
+    background-image:
+        radial-gradient(circle, rgba(255,255,255,.95) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,220,220,.8) 1px, transparent 2px),
+        radial-gradient(circle, rgba(255,255,255,.7) 1px, transparent 2px);
+
+    background-size:
+        45px 45px,
+        70px 70px,
+        100px 100px;
+
+    background-position:
+        0 0,
+        20px 35px,
+        50px 10px;
+
+    animation: starMove 8s linear infinite;
+}
+
+.stars::after {
+    opacity: 0.55;
+
+    transform: rotate(8deg);
+
+    animation-duration: 12s;
+}
+
+@keyframes starMove {
+
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(45px, 35px);
+    }
+}
+
+.pin-box {
+    position: relative;
+
+    z-index: 5;
+
+    width: min(90%, 390px);
+
+    padding: 40px 25px;
+
+    text-align: center;
+
+    background: rgba(120, 5, 25, 0.25);
+
+    border-radius: 25px;
+
+    backdrop-filter: blur(3px);
+}
+
+.pin-sparkle {
+    font-size: 35px;
+    margin-bottom: 10px;
+}
+
+.pin-box h1 {
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.pin-box > p {
+    margin-bottom: 22px;
+}
+
+#pinInput {
+    width: 100%;
+
+    height: 52px;
+
+    border-radius: 15px;
+
+    border: 2px solid rgba(255, 255, 255, 0.8);
+
+    background: rgba(255, 255, 255, 0.95);
+
+    color: #8e1022;
+
+    text-align: center;
+
+    font-size: 22px;
+
+    letter-spacing: 8px;
+
+    outline: none;
+
+    margin-bottom: 17px;
+}
+
+.pin-message {
+    min-height: 22px;
+
+    margin-top: 12px;
+
+    color: white;
+}
+
+
+/* ================= STORY ================= */
+
+#storyPage {
+    background: #fff5f5;
+
+    color: #61111b;
+}
+
+.story-slide {
+    display: none;
+
+    min-height: 100vh;
+
+    width: 100%;
+
+    position: relative;
+}
+
+.story-slide.active {
+    display: flex;
+}
+
+
+/* Birthday */
+
+#slide1 {
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.birthday-background {
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        linear-gradient(
+            rgba(80, 0, 10, 0.25),
+            rgba(80, 0, 10, 0.4)
+        ),
+        url("picture/background.jpg");
+
+    background-size: cover;
+    background-position: center;
+
+    filter: saturate(0.95);
+}
+
+.birthday-content {
+    position: relative;
+
+    z-index: 2;
+
+    text-align: center;
+
+    color: white;
+
+    padding: 25px;
+}
+
+.small-text {
+    font-size: 14px;
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+}
+
+.birthday-content h1 {
+    font-size: clamp(36px, 10vw, 65px);
+
+    line-height: 1.1;
+
+    margin-bottom: 30px;
+
+    text-shadow:
+        0 3px 20px rgba(0, 0, 0, 0.35);
+}
+
+
+/* Letter */
+
+#slide2 {
+    align-items: center;
+    justify-content: center;
+
+    padding: 35px 20px;
+
+    background:
+        radial-gradient(
+            circle at top right,
+            #ffd7dc,
+            transparent 35%
+        ),
+        #fff6f6;
+}
+
+.letter {
+    width: min(100%, 650px);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 35px 25px;
+
+    text-align: left;
+}
+
+.eyebrow {
+    font-size: 11px;
+
+    letter-spacing: 3px;
+
+    color: #c3273c;
+
+    margin-bottom: 10px;
+
+    font-weight: bold;
+}
+
+.letter h1,
+.memories h1,
+.closing h1 {
+    font-size: 36px;
+
+    line-height: 1.1;
+
+    margin-bottom: 25px;
+}
+
+.letter-text {
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: #5e3035;
+}
+
+.letter-text p {
+    margin-bottom: 17px;
+}
+
+.letter .main-btn {
+    margin-top: 10px;
+}
+
+
+/* Memories */
+
+#slide3 {
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px 18px;
+
+    background: #fff4f4;
+}
+
+.memories {
+    width: 100%;
+
+    text-align: center;
+}
+
+.photo-card {
+    width: min(88vw, 350px);
+
+    margin: 10px auto 20px;
+
+    background: white;
+
+    padding: 13px 13px 0;
+
+    box-shadow:
+        0 10px 30px rgba(80, 0, 10, 0.15);
+
+    transform: rotate(-1deg);
+}
+
+.photo-card img {
+    width: 100%;
+
+    height: min(65vh, 390px);
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.photo-caption {
+    min-height: 75px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 12px;
+
+    font-family: "Comic Sans MS", cursive;
+
+    color: #6d3036;
+
+    font-size: 17px;
+}
+
+.memory-controls {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 22px;
+
+    margin-bottom: 18px;
+}
+
+.memory-controls button {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #a6152a;
+
+    color: white;
+
+    font-size: 18px;
+}
+
+#memoryNumber {
+    font-family: Arial, sans-serif;
+
+    font-size: 13px;
+}
+
+
+/* Closing */
+
+#slide4 {
+    align-items: center;
+    justify-content: center;
+
+    padding: 35px 20px;
+}
+
+.closing {
+    width: min(100%, 650px);
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 20px 5px;
+}
+
+.closing-text {
+    font-family: Arial, sans-serif;
+
+    font-size: 15px;
+
+    line-height: 1.8;
+
+    color: #5e3035;
+}
+
+.closing-text p {
+    margin-bottom: 18px;
+}
+
+.closing .main-btn {
+    margin-top: 5px;
+}
+
+
+/* Final */
+
+#slide5 {
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #ffdce0,
+            #fff4f4 60%
         );
+}
 
-        member.classList.add(
-          "found"
-        );
+.final-message {
+    max-width: 600px;
+}
 
-        keyFound.classList.add(
-          "show"
-        );
+.final-heart {
+    font-size: 60px;
 
-        return;
+    color: #b2172c;
 
-      }
+    margin-bottom: 25px;
+}
 
+.final-message p {
+    font-size: clamp(21px, 5vw, 30px);
 
-      /* =========================
-         WRONG
-      ========================== */
+    line-height: 1.6;
 
-      member.classList.remove(
-        "wrong"
-      );
+    font-style: italic;
 
-      void member.offsetWidth;
+    color: #651a23;
+}
 
-      member.classList.add(
-        "wrong"
-      );
+.final-message h2 {
+    margin-top: 35px;
 
+    font-size: 23px;
 
-      wrongMessage.classList.remove(
-        "show"
-      );
-
-      void wrongMessage.offsetWidth;
-
-      wrongMessage.classList.add(
-        "show"
-      );
-
-    }
-
-  );
-
-});
-
-
-/* =================================
-   FLOWER TRANSITION
-================================= */
-
-const flowerContainer =
-  document.getElementById(
-    "flowerContainer"
-  );
-
-
-const flowerImages = [
-
-  "flower 1.png",
-  "flower 2.png",
-  "flower 3.png"
-
-];
-
-
-function createFlowers() {
-
-  flowerContainer.innerHTML = "";
-
-
-  /*
-    BANYAK BANGET BUNGA.
-    Dibuat dalam beberapa lingkaran
-    supaya tetap terlihat teratur.
-  */
-
-  const totalFlowers = 75;
-
-
-  for (
-    let i = 0;
-    i < totalFlowers;
-    i++
-  ) {
-
-    const flower =
-      document.createElement("img");
-
-
-    flower.className =
-      "flower";
-
-
-    flower.src =
-      flowerImages[
-        i % flowerImages.length
-      ];
-
-
-    /*
-      Susunan radial.
-      Jadi bukan bunga random
-      yang dilempar ke mana-mana.
-    */
-
-    const angle =
-      (i / totalFlowers)
-      * Math.PI
-      * 2;
-
-
-    const ring =
-      Math.floor(i / 15);
-
-
-    const distance =
-      90 + ring * 115;
-
-
-    const x =
-      Math.cos(angle)
-      * distance;
-
-
-    const y =
-      Math.sin(angle)
-      * distance;
-
-
-    const scale =
-      0.9 +
-      ((i * 13) % 60)
-      / 100;
-
-
-    const rotation =
-      ((i * 29) % 50) - 25;
-
-
-    flower.style.setProperty(
-      "--x",
-      `${x}px`
-    );
-
-
-    flower.style.setProperty(
-      "--y",
-      `${y}px`
-    );
-
-
-    flower.style.setProperty(
-      "--scale",
-      scale.toFixed(2)
-    );
-
-
-    flower.style.setProperty(
-      "--rotate",
-      `${rotation}deg`
-    );
-
-
-    /*
-      Sedikit delay supaya
-      bunga muncul bertahap,
-      tapi tetap cepat.
-    */
-
-    flower.style.animationDelay =
-      `${i * 0.012}s`;
-
-
-    flowerContainer.appendChild(
-      flower
-    );
-
-  }
-
+    color: #a31429;
 }
 
 
-document
-  .getElementById("nextToFlowers")
-  .addEventListener(
-    "click",
-    () => {
+/* ================= MOBILE ================= */
 
-      createFlowers();
+@media (max-width: 420px) {
 
-      showScreen(
-        screens.flowers
-      );
-
-
-      /*
-        Tunggu bunga memenuhi
-        seluruh layar.
-      */
-
-      setTimeout(
-        () => {
-
-          screens.flowers
-            .classList.add(
-              "leaving"
-            );
-
-
-          setTimeout(
-            () => {
-
-              screens.flowers
-                .classList.remove(
-                  "leaving"
-                );
-
-              showScreen(
-                screens.pin
-              );
-
-            },
-            500
-          );
-
-        },
-        1900
-      );
-
+    .game-area {
+        height: 530px;
     }
-  );
 
+    .member img {
+        max-height: 110px;
+    }
 
-/* =================================
-   PIN
-================================= */
+    .spiderman {
+        width: 110px;
+    }
 
-const pinInput =
-  document.getElementById(
-    "pinInput"
-  );
+    .game-title h1 {
+        font-size: 24px;
+    }
 
-const pinError =
-  document.getElementById(
-    "pinError"
-  );
+    .letter h1,
+    .memories h1,
+    .closing h1 {
+        font-size: 31px;
+    }
 
-
-function checkPin() {
-
-  const pin =
-    pinInput.value;
-
-
-  if (pin === "26092000") {
-
-    pinError.textContent = "";
-
-    pinInput.blur();
-
-    showScreen(
-      screens.birthday
-    );
-
-  } else {
-
-    pinError.textContent =
-      "PIN-nya belum benar ♡";
-
-    pinInput.value = "";
-
-    pinInput.focus();
-
-  }
+    .birthday-content h1 {
+        font-size: 38px;
+    }
 
 }
-
-
-document
-  .getElementById("pinButton")
-  .addEventListener(
-    "click",
-    checkPin
-  );
-
-
-pinInput.addEventListener(
-  "keydown",
-  event => {
-
-    if (
-      event.key === "Enter"
-    ) {
-
-      checkPin();
-
-    }
-
-  }
-);
-
-
-/* =================================
-   BIRTHDAY → LETTER
-================================= */
-
-document
-  .getElementById("birthdayNext")
-  .addEventListener(
-    "click",
-    () => {
-
-      showScreen(
-        screens.letter
-      );
-
-    }
-  );
-
-
-/* =================================
-   LETTER → MEMORY
-================================= */
-
-document
-  .getElementById("letterNext")
-  .addEventListener(
-    "click",
-    () => {
-
-      showScreen(
-        screens.memory
-      );
-
-    }
-  );
-
-
-/* =================================
-   MEMORIES
-================================= */
-
-const photos = [
-
-  "foto 1.jpeg",
-  "foto 2.jpeg",
-  "foto 3.jpeg",
-  "foto 4.jpeg",
-  "foto 5.jpeg",
-  "foto 6.jpeg",
-  "foto 7.jpeg",
-  "foto 8.jpeg",
-  "foto 9.jpeg",
-  "foto 10.jpeg"
-
-];
-
-
-const captions = [
-
-  "A little memory I'll always keep close. ♡",
-
-  "One of those moments I'll never forget.",
-
-  "Growing up together, one memory at a time.",
-
-  "Another little piece of our story. ♡",
-
-  "A moment worth keeping forever.",
-
-  "Thank you for all these memories.",
-
-  "Just us, being us. ♡",
-
-  "A memory that still makes me smile.",
-
-  "So many moments, so much love.",
-
-  "And there are still so many memories to come. ♡"
-
-];
-
-
-let currentPhoto = 0;
-
-
-const memoryImage =
-  document.getElementById(
-    "memoryImage"
-  );
-
-const memoryCaption =
-  document.getElementById(
-    "memoryCaption"
-  );
-
-const memoryNumber =
-  document.getElementById(
-    "memoryNumber"
-  );
-
-const polaroid =
-  document.getElementById(
-    "polaroid"
-  );
-
-
-function updateMemory() {
-
-  /*
-    Animasi kecil ketika
-    foto berganti.
-  */
-
-  polaroid.style.transform =
-    "rotate(1deg) scale(.96)";
-
-
-  setTimeout(
-    () => {
-
-      memoryImage.src =
-        photos[currentPhoto];
-
-
-      memoryCaption.textContent =
-        captions[currentPhoto];
-
-
-      memoryNumber.textContent =
-        `${currentPhoto + 1} / ${photos.length}`;
-
-
-      if (
-        currentPhoto % 2 === 0
-      ) {
-
-        polaroid.style.transform =
-          "rotate(-1deg) scale(1)";
-
-      } else {
-
-        polaroid.style.transform =
-          "rotate(1deg) scale(1)";
-
-      }
-
-    },
-    130
-  );
-
-}
-
-
-/* PREVIOUS */
-
-document
-  .getElementById("previousPhoto")
-  .addEventListener(
-    "click",
-    () => {
-
-      currentPhoto--;
-
-      if (
-        currentPhoto < 0
-      ) {
-
-        currentPhoto =
-          photos.length - 1;
-
-      }
-
-      updateMemory();
-
-    }
-  );
-
-
-/* NEXT PHOTO */
-
-document
-  .getElementById("nextPhoto")
-  .addEventListener(
-    "click",
-    () => {
-
-      currentPhoto++;
-
-      if (
-        currentPhoto >=
-        photos.length
-      ) {
-
-        currentPhoto = 0;
-
-      }
-
-      updateMemory();
-
-    }
-  );
-
-
-/* MEMORY → CLOSING */
-
-document
-  .getElementById("memoryNext")
-  .addEventListener(
-    "click",
-    () => {
-
-      showScreen(
-        screens.closing
-      );
-
-    }
-  );
-
-
-/* CLOSING → FINAL */
-
-document
-  .getElementById("closingNext")
-  .addEventListener(
-    "click",
-    () => {
-
-      showScreen(
-        screens.final
-      );
-
-    }
-  );
