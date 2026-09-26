@@ -148,9 +148,9 @@ function createFlowers() {
     container.innerHTML = "";
 
     const flowerImages = [
-        "picture/flower 1.png",
-        "picture/flower 2.png",
-        "picture/flower 3.png"
+        "flower 1.png",
+        "flower 2.png",
+        "flower 3.png"
     ];
 
     /*
@@ -283,16 +283,16 @@ document.querySelectorAll(".story-next").forEach(button => {
 ================================================== */
 
 const photos = [
-    "picture/foto 1.jpeg",
-    "picture/foto 2.jpeg",
-    "picture/foto 3.jpeg",
-    "picture/foto 4.jpeg",
-    "picture/foto 5.jpeg",
-    "picture/foto 6.jpeg",
-    "picture/foto 7.jpeg",
-    "picture/foto 8.jpeg",
-    "picture/foto 9.jpeg",
-    "picture/foto 10.jpeg"
+    "foto 1.jpeg",
+    "foto 2.jpeg",
+    "foto 3.jpeg",
+    "foto 4.jpeg",
+    "foto 5.jpeg",
+    "foto 6.jpeg",
+    "foto 7.jpeg",
+    "foto 8.jpeg",
+    "foto 9.jpeg",
+    "foto 10.jpeg"
 ];
 
 
